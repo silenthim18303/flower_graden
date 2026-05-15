@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>工坊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #counter-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #counter-btn .icon {
+            font-size: 10px;
+        }
+        #fertilizer-btn {
+            position: fixed;
+            top: 15px;
+            left: 120px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #fertilizer-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #compost-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        #compost-modal.show {
+            display: flex;
+        }
+        .compost-content {
+            background: linear-gradient(135deg, #8B6914, #6B4F12);
+            border-radius: 20px;
+            padding: 30px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 3px solid #A0822A;
+            position: relative;
+        }
+        .compost-title {
+            color: #FFF8DC;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .compost-info {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .compost-info p {
+            color: #FFF8DC;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .compost-info span {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        .compost-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+            margin: 5px;
+        }
+        .compost-btn:active {
+            transform: scale(0.95);
+        }
+        .compost-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+        .compost-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #FFF8DC;
+            font-size: 28px;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .compost-close:hover {
+            color: #FFD700;
+        }
+        .compost-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .compost-toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button id="counter-btn">
+        <span class="icon">🌿</span>
+        <span id="counter-text">杂草: 0</span>
+    </button>
+    <button id="fertilizer-btn">
+        <img class="icon" src="img/tools/fertilizer.png" alt="肥料">
+        <span id="fertilizer-text">肥料: 0</span>
+    </button>
+    <div id="compost-modal">
+        <div class="compost-content">
+            <span class="compost-close" id="compost-close">&times;</span>
+            <div class="compost-title">堆肥桶</div>
+            <div class="compost-info">
+                <p>当前杂草: <span id="compost-grass-count">0</span></p>
+                <p>需要消耗: <span>30</span> 杂草</p>
+                <p>产出: <span>1</span> 袋肥料</p>
+            </div>
+            <button class="compost-btn" id="compost-start">开始堆肥</button>
+        </div>
+    </div>
+    <div class="compost-toast" id="compost-toast"></div>
+    <div id="game-container"></div>
+    <script src="phaser-4.1.0/dist/phaser.js"></script>
+    <script src="grass.js"></script>
+    <script src="fertilizer.js"></script>
+    <script src="compostbin.js"></script>
+    <script src="grass_bill.js"></script>
+    <script src="game-work.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            initGrassDisplay();
+        });
+    </script>
+</body>
+</html>
