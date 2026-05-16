@@ -19,6 +19,8 @@ var game = new Phaser.Game(config);
 function preload() {
     this.load.image('background', 'img/background/shop.png');
     this.load.image('sickle', 'img/tools/sickle.png');
+    this.load.image('seed', 'img/tools/随机种子.png');
+    this.load.image('mower', 'img/tools/割草机.png');
 }
 
 function create() {
@@ -36,6 +38,8 @@ function create() {
     );
 
     createSickle(this);
+    createSeed(this);
+    createMower(this);
 }
 
 function update() {

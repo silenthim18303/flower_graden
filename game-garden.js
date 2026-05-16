@@ -17,10 +17,7 @@ var config = {
 var game = new Phaser.Game(config);
 
 function preload() {
-    this.load.image('background', 'img/background/work_house.png');
-    this.load.image('compostbin', 'img/tools/compostbin.png');
-    this.load.image('grass_bill', 'img/tools/grass_bill.png');
-    this.load.image('flowerbox', 'img/plants/花箱.png');
+    this.load.image('background', 'img/background/garden.png');
 }
 
 function create() {
@@ -36,10 +33,6 @@ function create() {
         (this.scale.width - bg.displayWidth) / 2,
         (this.scale.height - bg.displayHeight) / 2
     );
-
-    createCompostbin(this);
-    createGrassBill(this);
-    createFlowerbox(this);
 }
 
 function update() {

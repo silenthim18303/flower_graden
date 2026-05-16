@@ -4,19 +4,20 @@ var fertilizerText = null;
 var COMPOST_COST = 30;
 
 function loadFertilizerCounter() {
-    var saved = localStorage.getItem('fertilizerCounter');
-    if (saved !== null) {
-        fertilizerCounter = parseInt(saved, 10);
-    }
+    fertilizerCounter = GameData.getFertilizerCount();
     return fertilizerCounter;
 }
 
 function saveFertilizerCounter() {
-    localStorage.setItem('fertilizerCounter', fertilizerCounter.toString());
+    GameData.setFertilizerCount(fertilizerCounter);
 }
 
 function updateFertilizerDisplay() {
+    if (!fertilizerText) {
+        fertilizerText = document.getElementById('fertilizer-text');
+    }
     if (fertilizerText) {
+        fertilizerCounter = GameData.getFertilizerCount();
         fertilizerText.textContent = '肥料: ' + fertilizerCounter;
     }
 }
@@ -62,12 +63,20 @@ function openCompostModal() {
     }
 
     modal.classList.add('show');
+    var canvas = document.querySelector('canvas');
+    if (canvas) {
+        canvas.style.pointerEvents = 'none';
+    }
 }
 
 function closeCompostModal() {
     var modal = document.getElementById('compost-modal');
     if (modal) {
         modal.classList.remove('show');
+        var canvas = document.querySelector('canvas');
+        if (canvas) {
+            canvas.style.pointerEvents = 'auto';
+        }
     }
 }
 

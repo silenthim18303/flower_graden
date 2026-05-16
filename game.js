@@ -20,8 +20,13 @@ function preload() {
     this.load.image('background', 'img/background/back1.png');
     this.load.image('work', 'img/tools/work.png');
     this.load.image('mark_bill', 'img/tools/mark_bill.png');
+    this.load.image('garden_bill', 'img/tools/garden_bill.png');
     this.load.image('tree', 'img/plants/tree.png');
     this.load.image('grass', 'img/plants/glass.png');
+    this.load.image('orchid', 'img/plants/蝴蝶兰.png');
+    this.load.image('chrysanthemum', 'img/plants/菊花.png');
+    this.load.image('starflower', 'img/plants/星月相随.png');
+    this.load.image('passerbyflower', 'img/plants/过路黄.png');
 }
 
 function create() {
@@ -41,7 +46,12 @@ function create() {
     createTree(this);
     createWork(this);
     createMarkBill(this);
+    createGardenBill(this);
     createGrass(this);
+    createOrchid(this);
+    initChrysanthemum(this);
+    initStarFlower(this);
+    initPasserbyFlower(this);
 }
 
 function update() {
