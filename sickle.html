@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>镰刀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(180deg, #4a4a4a 0%, #2d2d2d 100%);
+        }
+        #counter-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #counter-btn .icon {
+            font-size: 10px;
+        }
+        #fertilizer-btn {
+            position: fixed;
+            top: 50px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #fertilizer-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #seed-btn {
+            position: fixed;
+            top: 85px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #seed-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #money-btn {
+            position: fixed;
+            top: 120px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #money-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        #nav-back {
+            left: 15px;
+        }
+        .sickle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        .sickle-card {
+            background: linear-gradient(135deg, #4a4a4a, #2d2d2d);
+            border-radius: 20px;
+            padding: 30px;
+            width: 320px;
+            max-width: 90vw;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 3px solid #666;
+        }
+        .sickle-title {
+            color: #FFD700;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .sickle-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .sickle-info p {
+            color: #ddd;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .sickle-info span {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        .sickle-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .sickle-btn:active {
+            transform: scale(0.95);
+        }
+        .sickle-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button id="counter-btn">
+        <span class="icon">🌿</span>
+        <span id="counter-text">杂草: 0</span>
+    </button>
+    <button id="fertilizer-btn">
+        <img class="icon" src="img/tools/fertilizer.png" alt="肥料">
+        <span id="fertilizer-text">肥料: 0</span>
+    </button>
+    <button id="seed-btn">
+        <img class="icon" src="img/tools/随机种子.png" alt="种子">
+        <span id="seed-text">种子: 0</span>
+    </button>
+    <button id="money-btn">
+        <img class="icon" src="img/tools/money.png" alt="货币">
+        <span id="money-text">货币: 0</span>
+    </button>
+    <a href="shop.html" id="nav-back" class="nav-btn">返回商店</a>
+    <div class="sickle-container">
+        <div class="sickle-card">
+            <div class="sickle-title">获取镰刀</div>
+            <div class="sickle-info">
+                <p>当前肥料: <span id="fert-count">0</span></p>
+                <p>需要消耗: <span>10</span> 袋肥料</p>
+            </div>
+            <button class="sickle-btn" id="sickle-buy">兑换镰刀</button>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="gameData.js"></script>
+    <script src="toolbar.js"></script>
+    <script src="fertilizer.js"></script>
+    <script>
+        var sickleCost = 10;
+
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 1500);
+        }
+
+        function updateGrassDisplay() {
+            var count = GameData.getGrassCount();
+            var grassText = document.getElementById('counter-text');
+            if (grassText) grassText.textContent = '杂草: ' + count;
+        }
+
+        function updateFertilizerDisplay() {
+            var count = GameData.getFertilizerCount();
+            var fertText = document.getElementById('fertilizer-text');
+            if (fertText) fertText.textContent = '肥料: ' + count;
+            var fertCountEl = document.getElementById('fert-count');
+            if (fertCountEl) fertCountEl.textContent = count;
+        }
+
+        function updateMoneyDisplay() {
+            var count = GameData.getMoneyCount();
+            var moneyText = document.getElementById('money-text');
+            if (moneyText) moneyText.textContent = '货币: ' + count;
+        }
+
+        function updateBuyButton() {
+            var buyBtn = document.getElementById('sickle-buy');
+            if (!buyBtn) return;
+
+            if (GameData.isSickleUnlocked()) {
+                buyBtn.disabled = true;
+                buyBtn.textContent = '已拥有';
+                return;
+            }
+
+            var fertCount = GameData.getFertilizerCount();
+            if (fertCount < sickleCost) {
+                buyBtn.disabled = true;
+                buyBtn.textContent = '肥料不足';
+            } else {
+                buyBtn.disabled = false;
+                buyBtn.textContent = '兑换镰刀';
+            }
+        }
+
+        function doExchange() {
+            if (GameData.isSickleUnlocked()) {
+                showToast('你已经拥有镰刀了');
+                return;
+            }
+
+            var fertCount = GameData.getFertilizerCount();
+            if (fertCount < sickleCost) {
+                showToast('肥料不足，需要10袋肥料！');
+                return;
+            }
+
+            GameData.setFertilizerCount(fertCount - sickleCost);
+            GameData.unlockSickle();
+
+            updateFertilizerDisplay();
+            updateBuyButton();
+            showToast('兑换成功！获得1把镰刀');
+        }
+
+        window.addEventListener('load', function() {
+            updateGrassDisplay();
+            updateFertilizerDisplay();
+            updateSeedDisplay();
+            updateMoneyDisplay();
+            updateBuyButton();
+
+            document.getElementById('sickle-buy').addEventListener('click', doExchange);
+        });
+    </script>
+</body>
+</html>

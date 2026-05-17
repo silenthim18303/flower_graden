@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>随机种子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(180deg, #8B4513 0%, #654321 100%);
+        }
+        #counter-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #counter-btn .icon {
+            font-size: 10px;
+        }
+        #fertilizer-btn {
+            position: fixed;
+            top: 50px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #fertilizer-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #seed-btn {
+            position: fixed;
+            top: 85px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #seed-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #money-btn {
+            position: fixed;
+            top: 120px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #money-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        #nav-back {
+            left: 15px;
+        }
+        .seed-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        .seed-card {
+            background: linear-gradient(135deg, #8B4513, #654321);
+            border-radius: 20px;
+            padding: 30px;
+            width: 320px;
+            max-width: 90vw;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 3px solid #A0522D;
+        }
+        .seed-title {
+            color: #98FB98;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .seed-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .seed-info p {
+            color: #ddd;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .seed-info span {
+            color: #98FB98;
+            font-weight: bold;
+        }
+        .seed-btn {
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .seed-btn:active {
+            transform: scale(0.95);
+        }
+        .seed-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button id="counter-btn">
+        <span class="icon">🌿</span>
+        <span id="counter-text">杂草: 0</span>
+    </button>
+    <button id="fertilizer-btn">
+        <img class="icon" src="img/tools/fertilizer.png" alt="肥料">
+        <span id="fertilizer-text">肥料: 0</span>
+    </button>
+    <button id="seed-btn">
+        <img class="icon" src="img/tools/随机种子.png" alt="种子">
+        <span id="seed-text">种子: 0</span>
+    </button>
+    <button id="money-btn">
+        <img class="icon" src="img/tools/money.png" alt="货币">
+        <span id="money-text">货币: 0</span>
+    </button>
+    <a href="shop.html" id="nav-back" class="nav-btn">返回商店</a>
+    <div class="seed-container">
+        <div class="seed-card">
+            <div class="seed-title">随机种子</div>
+            <div class="seed-info">
+                <p>当前肥料: <span id="fert-count">0</span></p>
+                <p>需要消耗: <span>5</span> 袋肥料</p>
+            </div>
+            <button class="seed-btn" id="seed-buy">兑换种子</button>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="gameData.js"></script>
+    <script src="toolbar.js"></script>
+    <script src="fertilizer.js"></script>
+    <script>
+        var seedCost = 5;
+
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 1500);
+        }
+
+        function updateGrassDisplay() {
+            var count = GameData.getGrassCount();
+            var grassText = document.getElementById('counter-text');
+            if (grassText) grassText.textContent = '杂草: ' + count;
+        }
+
+        function updateFertilizerDisplay() {
+            var count = GameData.getFertilizerCount();
+            var fertText = document.getElementById('fertilizer-text');
+            if (fertText) fertText.textContent = '肥料: ' + count;
+            var fertCountEl = document.getElementById('fert-count');
+            if (fertCountEl) fertCountEl.textContent = count;
+        }
+
+        function updateMoneyDisplay() {
+            var count = GameData.getMoneyCount();
+            var moneyText = document.getElementById('money-text');
+            if (moneyText) moneyText.textContent = '货币: ' + count;
+        }
+
+        function updateBuyButton() {
+            var buyBtn = document.getElementById('seed-buy');
+            if (!buyBtn) return;
+
+            var fertCount = GameData.getFertilizerCount();
+            if (fertCount < seedCost) {
+                buyBtn.disabled = true;
+                buyBtn.textContent = '肥料不足';
+            } else {
+                buyBtn.disabled = false;
+                buyBtn.textContent = '兑换种子';
+            }
+        }
+
+        function doExchange() {
+            var fertCount = GameData.getFertilizerCount();
+            if (fertCount < seedCost) {
+                showToast('肥料不足，需要5袋肥料！');
+                return;
+            }
+
+            GameData.setFertilizerCount(fertCount - seedCost);
+            GameData.addSeedCount(1);
+
+            updateFertilizerDisplay();
+            updateSeedDisplay();
+            updateBuyButton();
+            showToast('兑换成功！获得1包随机种子');
+        }
+
+        window.addEventListener('load', function() {
+            updateGrassDisplay();
+            updateFertilizerDisplay();
+            updateSeedDisplay();
+            updateMoneyDisplay();
+            updateBuyButton();
+
+            document.getElementById('seed-buy').addEventListener('click', doExchange);
+        });
+    </script>
+</body>
+</html>

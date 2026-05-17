@@ -14,67 +14,6 @@ var pcClickScale = 0.95;
 var pcAnimDuration = 100;
 // ==================================
 
-function openPcModal() {
-    var modal = document.getElementById('pc-modal');
-    if (modal) {
-        modal.classList.add('show');
-        var canvas = document.querySelector('canvas');
-        if (canvas) {
-            canvas.style.pointerEvents = 'none';
-        }
-    }
-}
-
-function closePcModal() {
-    var modal = document.getElementById('pc-modal');
-    if (modal) {
-        modal.classList.remove('show');
-        var canvas = document.querySelector('canvas');
-        if (canvas) {
-            canvas.style.pointerEvents = 'auto';
-        }
-    }
-}
-
-function blockEvent(e) {
-    e.stopPropagation();
-    e.preventDefault();
-}
-
-function initPcSystem() {
-    var modal = document.getElementById('pc-modal');
-    var closeBtn = document.getElementById('pc-close');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('pointerdown', function(e) {
-            blockEvent(e);
-            closePcModal();
-        });
-        closeBtn.addEventListener('click', blockEvent);
-    }
-
-    if (modal) {
-        modal.addEventListener('pointerdown', function(e) {
-            if (e.target === modal) {
-                closePcModal();
-            }
-            blockEvent(e);
-        });
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closePcModal();
-            }
-            blockEvent(e);
-        });
-
-        var content = modal.querySelector('.pc-content');
-        if (content) {
-            content.addEventListener('pointerdown', blockEvent);
-            content.addEventListener('click', blockEvent);
-        }
-    }
-}
-
 function createPc(scene) {
     var pc = scene.add.image(pcX, pcY, 'pc');
     pc.setScale(pcScale);
@@ -98,7 +37,3 @@ function createPc(scene) {
         });
     });
 }
-
-window.addEventListener('load', function() {
-    initPcSystem();
-});

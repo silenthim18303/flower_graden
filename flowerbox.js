@@ -14,109 +14,6 @@ var flowerboxClickScale = 0.95;
 var flowerboxAnimDuration = 100;
 // ==================================
 
-// ========== 花卉图片映射 ==========
-var flowerImageMap = {
-    'orchid': 'img/plants/蝴蝶兰.png',
-    'chrysanthemum': 'img/plants/菊花.png'
-};
-
-function openFlowerboxModal() {
-    var modal = document.getElementById('flowerbox-modal');
-    var list = document.getElementById('flowerbox-list');
-
-    if (!modal || !list) return;
-
-    var collection = GameData.getFlowerCollection();
-    var keys = Object.keys(collection);
-
-    list.innerHTML = '';
-
-    if (keys.length === 0) {
-        var emptyDiv = document.createElement('div');
-        emptyDiv.className = 'flowerbox-empty';
-        emptyDiv.textContent = '还没有收集到花哦~';
-        emptyDiv.addEventListener('pointerdown', function(e) {
-            e.stopPropagation();
-        });
-        list.appendChild(emptyDiv);
-    } else {
-        keys.forEach(function(key) {
-            var flower = collection[key];
-            var item = document.createElement('div');
-            item.className = 'flowerbox-item';
-            var imgSrc = flowerImageMap[key] || 'img/plants/星月相随.png';
-            item.innerHTML = '<img class="flowerbox-item-img" src="' + imgSrc + '" alt="' + flower.name + '"><span class="flowerbox-item-name">' + flower.name + '</span><span class="flowerbox-item-count">x' + flower.count + '</span>';
-            item.addEventListener('pointerdown', function(e) {
-                e.stopPropagation();
-            });
-            list.appendChild(item);
-        });
-    }
-
-    modal.classList.add('show');
-    var canvas = document.querySelector('canvas');
-    if (canvas) {
-        canvas.style.pointerEvents = 'none';
-    }
-}
-
-function closeFlowerboxModal() {
-    var modal = document.getElementById('flowerbox-modal');
-    if (modal) {
-        modal.classList.remove('show');
-        var canvas = document.querySelector('canvas');
-        if (canvas) {
-            canvas.style.pointerEvents = 'auto';
-        }
-    }
-}
-
-function initFlowerboxSystem() {
-    var modal = document.getElementById('flowerbox-modal');
-    var closeBtn = document.getElementById('flowerbox-close');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('pointerdown', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            closeFlowerboxModal();
-        });
-        closeBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-        });
-    }
-
-    if (modal) {
-        modal.addEventListener('pointerdown', function(e) {
-            if (e.target === modal) {
-                closeFlowerboxModal();
-            }
-            e.stopPropagation();
-            e.preventDefault();
-        });
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeFlowerboxModal();
-            }
-            e.stopPropagation();
-            e.preventDefault();
-        });
-
-        var content = modal.querySelector('.flowerbox-content');
-        if (content) {
-            content.addEventListener('pointerdown', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-            });
-            content.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-            });
-        }
-    }
-}
-
 function createFlowerbox(scene) {
     var flowerbox = scene.add.image(flowerboxX, flowerboxY, 'flowerbox');
     flowerbox.setScale(flowerboxScale);
@@ -135,12 +32,8 @@ function createFlowerbox(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
-                openFlowerboxModal();
+                window.location.href = 'flowerbox.html';
             }
         });
     });
 }
-
-window.addEventListener('load', function() {
-    initFlowerboxSystem();
-});

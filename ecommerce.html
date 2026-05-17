@@ -293,6 +293,16 @@
             </div>
             <button class="shop-item-btn" id="table-buy">购买</button>
         </div>
+        <div class="shop-item">
+            <div class="shop-item-info">
+                <img class="shop-item-img" src="img/furniture/鸟笼.png" alt="鸟笼">
+                <div>
+                    <div class="shop-item-name">精致鸟笼</div>
+                    <div class="shop-item-price">价格: 50金币</div>
+                </div>
+            </div>
+            <button class="shop-item-btn" id="birdcage-buy">购买</button>
+        </div>
     </div>
     <div class="shop-container">
         <div class="shop-title">出售商店</div>
@@ -482,6 +492,31 @@
                     tableBuyBtn.textContent = '已拥有';
                     updateAllDisplays();
                     showToast('购买成功！桌椅已放置到花园');
+                });
+            }
+
+            var birdcageBuyBtn = document.getElementById('birdcage-buy');
+            if (birdcageBuyBtn) {
+                if (GameData.isBirdCageUnlocked()) {
+                    birdcageBuyBtn.disabled = true;
+                    birdcageBuyBtn.textContent = '已拥有';
+                }
+                birdcageBuyBtn.addEventListener('click', function() {
+                    if (GameData.isBirdCageUnlocked()) {
+                        showToast('你已经拥有鸟笼了');
+                        return;
+                    }
+                    var money = GameData.getMoneyCount();
+                    if (money < 50) {
+                        showToast('金币不足');
+                        return;
+                    }
+                    GameData.addMoneyCount(-50);
+                    GameData.unlockBirdCage();
+                    birdcageBuyBtn.disabled = true;
+                    birdcageBuyBtn.textContent = '已拥有';
+                    updateAllDisplays();
+                    showToast('购买成功！鸟笼已放置到花园');
                 });
             }
         }

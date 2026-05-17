@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的花箱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #FFB6C1 0%, #FFC0CB 100%);
+        }
+        #counter-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #counter-btn .icon {
+            font-size: 10px;
+        }
+        #fertilizer-btn {
+            position: fixed;
+            top: 50px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #fertilizer-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #seed-btn {
+            position: fixed;
+            top: 85px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #seed-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #money-btn {
+            position: fixed;
+            top: 120px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #money-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        #nav-back {
+            left: 15px;
+        }
+        .flowerbox-container {
+            width: 90%;
+            max-width: 400px;
+            margin: 160px auto 80px;
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: 3px solid #FFB6C1;
+        }
+        .flowerbox-title {
+            color: #FF1493;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .flowerbox-list {
+            background: #F5F5F5;
+            border-radius: 12px;
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .flowerbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .flowerbox-item-img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+        .flowerbox-item-name {
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            flex: 1;
+            text-align: left;
+        }
+        .flowerbox-item-count {
+            color: #FF1493;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .flowerbox-empty {
+            color: #999;
+            font-size: 14px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <button id="counter-btn">
+        <span class="icon">🌿</span>
+        <span id="counter-text">杂草: 0</span>
+    </button>
+    <button id="fertilizer-btn">
+        <img class="icon" src="img/tools/fertilizer.png" alt="肥料">
+        <span id="fertilizer-text">肥料: 0</span>
+    </button>
+    <button id="seed-btn">
+        <img class="icon" src="img/tools/随机种子.png" alt="种子">
+        <span id="seed-text">种子: 0</span>
+    </button>
+    <button id="money-btn">
+        <img class="icon" src="img/tools/money.png" alt="货币">
+        <span id="money-text">货币: 0</span>
+    </button>
+    <a href="work.html" id="nav-back" class="nav-btn">返回工坊</a>
+    <div class="flowerbox-container">
+        <div class="flowerbox-title">我的花箱</div>
+        <div class="flowerbox-list" id="flowerbox-list">
+            <div class="flowerbox-empty">还没有收集到花哦~</div>
+        </div>
+    </div>
+    <script src="gameData.js"></script>
+    <script src="toolbar.js"></script>
+    <script src="fertilizer.js"></script>
+    <script>
+        var flowerImageMap = {
+            'orchid': 'img/plants/蝴蝶兰.png',
+            'chrysanthemum': 'img/plants/菊花.png',
+            'starflower': 'img/plants/星月相随.png',
+            'passerbyflower': 'img/plants/过路黄.png'
+        };
+
+        function updateGrassDisplay() {
+            var count = GameData.getGrassCount();
+            var grassText = document.getElementById('counter-text');
+            if (grassText) grassText.textContent = '杂草: ' + count;
+        }
+
+        function updateFertilizerDisplay() {
+            var count = GameData.getFertilizerCount();
+            var fertText = document.getElementById('fertilizer-text');
+            if (fertText) fertText.textContent = '肥料: ' + count;
+        }
+
+        function updateMoneyDisplay() {
+            var count = GameData.getMoneyCount();
+            var moneyText = document.getElementById('money-text');
+            if (moneyText) moneyText.textContent = '货币: ' + count;
+        }
+
+        function renderFlowerbox() {
+            var list = document.getElementById('flowerbox-list');
+            if (!list) return;
+
+            var collection = GameData.getFlowerCollection();
+            var keys = Object.keys(collection);
+
+            list.innerHTML = '';
+
+            if (keys.length === 0) {
+                var emptyDiv = document.createElement('div');
+                emptyDiv.className = 'flowerbox-empty';
+                emptyDiv.textContent = '还没有收集到花哦~';
+                list.appendChild(emptyDiv);
+                return;
+            }
+
+            keys.forEach(function(key) {
+                var flower = collection[key];
+                var item = document.createElement('div');
+                item.className = 'flowerbox-item';
+                var imgSrc = flowerImageMap[key] || 'img/plants/星月相随.png';
+                item.innerHTML = '<img class="flowerbox-item-img" src="' + imgSrc + '" alt="' + flower.name + '"><span class="flowerbox-item-name">' + flower.name + '</span><span class="flowerbox-item-count">x' + flower.count + '</span>';
+                list.appendChild(item);
+            });
+        }
+
+        window.addEventListener('load', function() {
+            updateGrassDisplay();
+            updateFertilizerDisplay();
+            updateSeedDisplay();
+            updateMoneyDisplay();
+            renderFlowerbox();
+        });
+    </script>
+</body>
+</html>

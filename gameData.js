@@ -15,7 +15,8 @@ var GameData = {
         CHRYSANTHEMUM_COUNT: 'chrysanthemumCount',
         SEED_COUNT: 'seedCount',
         MONEY_COUNT: 'moneyCount',
-        TABLE_UNLOCKED: 'tableUnlocked'
+        TABLE_UNLOCKED: 'tableUnlocked',
+        BIRD_CAGE_UNLOCKED: 'birdCageUnlocked'
     },
 
     // ========== 默认值 ==========
@@ -30,7 +31,8 @@ var GameData = {
         chrysanthemumCount: 0,
         seedCount: 0,
         moneyCount: 0,
-        tableUnlocked: false
+        tableUnlocked: false,
+        birdCageUnlocked: false
     },
 
     // ========== 内存缓存 ==========
@@ -45,7 +47,8 @@ var GameData = {
         chrysanthemumCount: 0,
         seedCount: 0,
         moneyCount: 0,
-        tableUnlocked: false
+        tableUnlocked: false,
+        birdCageUnlocked: false
     },
 
     // ========== 初始化 ==========
@@ -66,6 +69,7 @@ var GameData = {
         this._cache.seedCount = this.load(this.KEYS.SEED_COUNT, this.DEFAULTS.seedCount);
         this._cache.moneyCount = this.load(this.KEYS.MONEY_COUNT, this.DEFAULTS.moneyCount);
         this._cache.tableUnlocked = this.load(this.KEYS.TABLE_UNLOCKED, this.DEFAULTS.tableUnlocked);
+        this._cache.birdCageUnlocked = this.load(this.KEYS.BIRD_CAGE_UNLOCKED, this.DEFAULTS.birdCageUnlocked);
     },
 
     // ========== 通用加载方法 ==========
@@ -262,6 +266,16 @@ var GameData = {
         this.save(this.KEYS.TABLE_UNLOCKED, true);
     },
 
+    // ========== 鸟笼解锁状态 ==========
+    isBirdCageUnlocked: function() {
+        return this._cache.birdCageUnlocked;
+    },
+
+    unlockBirdCage: function() {
+        this._cache.birdCageUnlocked = true;
+        this.save(this.KEYS.BIRD_CAGE_UNLOCKED, true);
+    },
+
     // ========== 重置所有数据（调试用） ==========
     resetAll: function() {
         localStorage.removeItem(this.KEYS.GRASS_COUNT);
@@ -275,6 +289,7 @@ var GameData = {
         localStorage.removeItem(this.KEYS.SEED_COUNT);
         localStorage.removeItem(this.KEYS.MONEY_COUNT);
         localStorage.removeItem(this.KEYS.TABLE_UNLOCKED);
+        localStorage.removeItem(this.KEYS.BIRD_CAGE_UNLOCKED);
         this.loadAll();
     }
 };

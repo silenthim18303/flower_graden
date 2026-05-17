@@ -110,251 +110,26 @@
             width: 16px;
             height: 16px;
         }
-        #compost-modal {
-            display: none;
+        .nav-btn {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            pointer-events: auto;
-        }
-        #compost-modal.show {
-            display: flex;
-        }
-        .compost-content {
-            background: linear-gradient(135deg, #8B6914, #6B4F12);
-            border-radius: 20px;
-            padding: 30px;
-            width: 320px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 3px solid #A0822A;
-            position: relative;
-            pointer-events: auto;
-        }
-        .compost-title {
-            color: #FFF8DC;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        .compost-info {
-            background: rgba(255,255,255,0.15);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .compost-info p {
-            color: #FFF8DC;
-            font-size: 16px;
-            margin: 8px 0;
-        }
-        .compost-info span {
-            color: #FFD700;
-            font-weight: bold;
-        }
-        .compost-btn {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
+            bottom: 20px;
+            z-index: 1000;
+            background: white;
+            color: black;
             border: none;
-            border-radius: 12px;
-            padding: 14px 32px;
-            font-size: 18px;
+            border-radius: 50px;
+            padding: 6px 10px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.1s;
-            margin: 5px;
-            pointer-events: auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            text-decoration: none;
         }
-        .compost-btn:active {
-            transform: scale(0.95);
+        #nav-grass {
+            left: 15px;
         }
-        .compost-btn:disabled {
-            background: #888;
-            cursor: not-allowed;
-        }
-        .compost-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            color: #FFF8DC;
-            font-size: 28px;
-            cursor: pointer;
-            font-weight: bold;
-            line-height: 1;
-            pointer-events: auto;
-        }
-        .compost-close:hover {
-            color: #FFD700;
-        }
-        .compost-toast {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            z-index: 3000;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-        .compost-toast.show {
-            opacity: 1;
-        }
-        #flowerbox-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            pointer-events: auto;
-        }
-        #flowerbox-modal.show {
-            display: flex;
-        }
-        .flowerbox-content {
-            background: #FFFFFF;
-            border-radius: 20px;
-            padding: 25px;
-            width: 320px;
-            max-height: 400px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 3px solid #FFB6C1;
-            position: relative;
-        }
-        .flowerbox-title {
-            color: #FF1493;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .flowerbox-list {
-            background: #F5F5F5;
-            border-radius: 12px;
-            padding: 10px;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-        .flowerbox-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            margin: 8px 0;
-            background: #FFFFFF;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .flowerbox-item-img {
-            width: 32px;
-            height: 32px;
-            margin-right: 10px;
-            object-fit: contain;
-        }
-        .flowerbox-item-name {
-            color: #333;
-            font-size: 16px;
-            font-weight: bold;
-            flex: 1;
-            text-align: left;
-        }
-        .flowerbox-item-count {
-            color: #FF1493;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .flowerbox-empty {
-            color: #999;
-            font-size: 14px;
-            padding: 20px;
-            opacity: 0.8;
-        }
-        #pc-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-            pointer-events: auto;
-        }
-        #pc-modal.show {
-            display: flex;
-        }
-        .pc-content {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            border-radius: 20px;
-            padding: 30px;
-            width: 320px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 3px solid #3498db;
-            position: relative;
-            pointer-events: auto;
-        }
-        .pc-title {
-            color: #ecf0f1;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .pc-info {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            pointer-events: auto;
-        }
-        .pc-info p {
-            color: #ecf0f1;
-            font-size: 16px;
-            margin: 8px 0;
-        }
-        .pc-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            color: #ecf0f1;
-            font-size: 28px;
-            cursor: pointer;
-            font-weight: bold;
-            pointer-events: auto;
-        }
-        .pc-close:hover {
-            color: #3498db;
-        }
-        .flowerbox-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            color: #FFF8DC;
-            font-size: 28px;
-            cursor: pointer;
-            font-weight: bold;
-            line-height: 1;
-        }
-        .flowerbox-close:hover {
-            color: #FFD700;
+        #nav-shop {
+            left: 120px;
         }
     </style>
 </head>
@@ -375,38 +150,8 @@
         <img class="icon" src="img/tools/money.png" alt="货币">
         <span id="money-text">货币: 0</span>
     </button>
-    <div id="compost-modal">
-        <div class="compost-content">
-            <span class="compost-close" id="compost-close">&times;</span>
-            <div class="compost-title">堆肥桶</div>
-            <div class="compost-info">
-                <p>当前杂草: <span id="compost-grass-count">0</span></p>
-                <p>需要消耗: <span>30</span> 杂草</p>
-                <p>产出: <span>1</span> 袋肥料</p>
-            </div>
-            <button class="compost-btn" id="compost-start">开始堆肥</button>
-        </div>
-    </div>
-    <div class="compost-toast" id="compost-toast"></div>
-    <div id="flowerbox-modal">
-        <div class="flowerbox-content">
-            <span class="flowerbox-close" id="flowerbox-close">&times;</span>
-            <div class="flowerbox-title">我的花箱</div>
-            <div class="flowerbox-list" id="flowerbox-list">
-                <div class="flowerbox-empty">还没有收集到花哦~</div>
-            </div>
-        </div>
-    </div>
-    <div id="pc-modal">
-        <div class="pc-content">
-            <span class="pc-close" id="pc-close">&times;</span>
-            <div class="pc-title">电脑</div>
-            <div class="pc-info">
-                <p>欢迎使用花园电脑！</p>
-                <p>这里可以查看花园信息。</p>
-            </div>
-        </div>
-    </div>
+    <a href="index.html" id="nav-grass" class="nav-btn">返回草地</a>
+    <a href="shop.html" id="nav-shop" class="nav-btn">返回商店</a>
     <div id="game-container"></div>
     <script src="phaser-4.1.0/dist/phaser.js"></script>
     <script src="gameData.js"></script>

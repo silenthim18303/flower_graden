@@ -32,7 +32,7 @@ function createCompostbin(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
-                openCompostModal();
+                window.location.href = 'compost.html';
             }
         });
     });

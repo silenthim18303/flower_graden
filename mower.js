@@ -14,137 +14,6 @@ var mowerClickScale = 0.95;
 var mowerAnimDuration = 100;
 // ==================================
 
-// ========== 兑换配置 ==========
-// 兑换所需肥料数量
-var mowerCost = 20;
-// ==================================
-
-function showMowerToast(message) {
-    var toast = document.getElementById('mower-toast');
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(function() {
-        toast.classList.remove('show');
-    }, 1500);
-}
-
-function openMowerModal() {
-    var modal = document.getElementById('mower-modal');
-    var fertCountEl = document.getElementById('mower-fertilizer-count');
-    var buyBtn = document.getElementById('mower-buy');
-
-    if (!modal) return;
-
-    if (GameData.isMowerUnlocked()) {
-        showMowerToast('你已经拥有割草机了');
-        return;
-    }
-
-    loadFertilizerCounter();
-    if (fertCountEl) {
-        fertCountEl.textContent = fertilizerCounter;
-    }
-
-    if (fertilizerCounter < mowerCost) {
-        if (buyBtn) {
-            buyBtn.disabled = true;
-            buyBtn.textContent = '肥料不足';
-        }
-    } else {
-        if (buyBtn) {
-            buyBtn.disabled = false;
-            buyBtn.textContent = '兑换割草机';
-        }
-    }
-
-    modal.classList.add('show');
-    var canvas = document.querySelector('canvas');
-    if (canvas) {
-        canvas.style.pointerEvents = 'none';
-    }
-}
-
-function closeMowerModal() {
-    var modal = document.getElementById('mower-modal');
-    if (modal) {
-        modal.classList.remove('show');
-        var canvas = document.querySelector('canvas');
-        if (canvas) {
-            canvas.style.pointerEvents = 'auto';
-        }
-    }
-}
-
-function doMowerExchange() {
-    loadFertilizerCounter();
-
-    if (fertilizerCounter < mowerCost) {
-        showMowerToast('肥料不足，需要' + mowerCost + '袋肥料！');
-        return;
-    }
-
-    fertilizerCounter -= mowerCost;
-    saveFertilizerCounter();
-    updateFertilizerDisplay();
-
-    GameData.unlockMower();
-
-    closeMowerModal();
-    showMowerToast('兑换成功！获得1台割草机');
-}
-
-function blockEvent(e) {
-    e.stopPropagation();
-    e.preventDefault();
-}
-
-function initMowerSystem() {
-    var modal = document.getElementById('mower-modal');
-    var closeBtn = document.getElementById('mower-close');
-    var buyBtn = document.getElementById('mower-buy');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('pointerdown', function(e) {
-            blockEvent(e);
-            closeMowerModal();
-        });
-        closeBtn.addEventListener('click', blockEvent);
-    }
-
-    if (modal) {
-        modal.addEventListener('pointerdown', function(e) {
-            if (e.target === modal) {
-                closeMowerModal();
-            }
-            blockEvent(e);
-        });
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeMowerModal();
-            }
-            blockEvent(e);
-        });
-
-        var content = modal.querySelector('.mower-content');
-        if (content) {
-            content.addEventListener('pointerdown', blockEvent);
-            content.addEventListener('click', blockEvent);
-        }
-    }
-
-    if (buyBtn) {
-        buyBtn.addEventListener('pointerdown', function(e) {
-            blockEvent(e);
-            doMowerExchange();
-        });
-        buyBtn.addEventListener('click', function(e) {
-            blockEvent(e);
-            doMowerExchange();
-        });
-    }
-}
-
 function createMower(scene) {
     var mower = scene.add.image(mowerX, mowerY, 'mower');
     mower.setScale(mowerScale);
@@ -163,12 +32,8 @@ function createMower(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
-                openMowerModal();
+                window.location.href = 'mower.html';
             }
         });
     });
 }
-
-window.addEventListener('load', function() {
-    initMowerSystem();
-});

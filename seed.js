@@ -14,132 +14,6 @@ var seedClickScale = 0.95;
 var seedAnimDuration = 100;
 // ==================================
 
-// ========== 兑换配置 ==========
-// 兑换所需肥料数量
-var seedCost = 5;
-// ==================================
-
-function showSeedToast(message) {
-    var toast = document.getElementById('seed-toast');
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(function() {
-        toast.classList.remove('show');
-    }, 1500);
-}
-
-function openSeedModal() {
-    var modal = document.getElementById('seed-modal');
-    var fertCountEl = document.getElementById('seed-fertilizer-count');
-    var buyBtn = document.getElementById('seed-buy');
-
-    if (!modal) return;
-
-    loadFertilizerCounter();
-    if (fertCountEl) {
-        fertCountEl.textContent = fertilizerCounter;
-    }
-
-    if (fertilizerCounter < seedCost) {
-        if (buyBtn) {
-            buyBtn.disabled = true;
-            buyBtn.textContent = '肥料不足';
-        }
-    } else {
-        if (buyBtn) {
-            buyBtn.disabled = false;
-            buyBtn.textContent = '兑换种子';
-        }
-    }
-
-    modal.classList.add('show');
-    var canvas = document.querySelector('canvas');
-    if (canvas) {
-        canvas.style.pointerEvents = 'none';
-    }
-}
-
-function closeSeedModal() {
-    var modal = document.getElementById('seed-modal');
-    if (modal) {
-        modal.classList.remove('show');
-        var canvas = document.querySelector('canvas');
-        if (canvas) {
-            canvas.style.pointerEvents = 'auto';
-        }
-    }
-}
-
-function doSeedExchange() {
-    loadFertilizerCounter();
-
-    if (fertilizerCounter < seedCost) {
-        showSeedToast('肥料不足，需要5袋肥料！');
-        return;
-    }
-
-    fertilizerCounter -= seedCost;
-    saveFertilizerCounter();
-    updateFertilizerDisplay();
-
-    GameData.addSeedCount(1);
-
-    closeSeedModal();
-    showSeedToast('兑换成功！获得1包随机种子');
-}
-
-function blockEvent(e) {
-    e.stopPropagation();
-    e.preventDefault();
-}
-
-function initSeedSystem() {
-    var modal = document.getElementById('seed-modal');
-    var closeBtn = document.getElementById('seed-close');
-    var buyBtn = document.getElementById('seed-buy');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('pointerdown', function(e) {
-            blockEvent(e);
-            closeSeedModal();
-        });
-        closeBtn.addEventListener('click', blockEvent);
-    }
-
-    if (modal) {
-        modal.addEventListener('pointerdown', function(e) {
-            if (e.target === modal) {
-                closeSeedModal();
-            }
-            blockEvent(e);
-        });
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeSeedModal();
-            }
-            blockEvent(e);
-        });
-
-        var content = modal.querySelector('.seed-content');
-        if (content) {
-            content.addEventListener('pointerdown', blockEvent);
-            content.addEventListener('click', blockEvent);
-        }
-    }
-
-    if (buyBtn) {
-        buyBtn.addEventListener('pointerdown', function(e) {
-            blockEvent(e);
-            doSeedExchange();
-        });
-        buyBtn.addEventListener('click', function(e) {
-            blockEvent(e);
-            doSeedExchange();
-        });
-    }
-}
-
 function createSeed(scene) {
     var seed = scene.add.image(seedX, seedY, 'seed');
     seed.setScale(seedScale);
@@ -158,12 +32,8 @@ function createSeed(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
-                openSeedModal();
+                window.location.href = 'seed.html';
             }
         });
     });
 }
-
-window.addEventListener('load', function() {
-    initSeedSystem();
-});
