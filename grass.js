@@ -30,6 +30,10 @@ var currentGrassCount = 0;
 var grassScene = null;
 var regrowTimer = null;
 
+function getCurrentGrassCount() {
+    return currentGrassCount;
+}
+
 function loadGrassCounter() {
     grassCounter = GameData.getGrassCount();
     return grassCounter;

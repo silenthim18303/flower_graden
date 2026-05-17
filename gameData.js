@@ -13,7 +13,9 @@ var GameData = {
         FLOWER_COLLECTION: 'flowerCollection',
         ORCHID_COUNT: 'orchidCount',
         CHRYSANTHEMUM_COUNT: 'chrysanthemumCount',
-        SEED_COUNT: 'seedCount'
+        SEED_COUNT: 'seedCount',
+        MONEY_COUNT: 'moneyCount',
+        TABLE_UNLOCKED: 'tableUnlocked'
     },
 
     // ========== 默认值 ==========
@@ -26,7 +28,9 @@ var GameData = {
         flowerCollection: {},
         orchidCount: 0,
         chrysanthemumCount: 0,
-        seedCount: 0
+        seedCount: 0,
+        moneyCount: 0,
+        tableUnlocked: false
     },
 
     // ========== 内存缓存 ==========
@@ -39,7 +43,9 @@ var GameData = {
         flowerCollection: {},
         orchidCount: 0,
         chrysanthemumCount: 0,
-        seedCount: 0
+        seedCount: 0,
+        moneyCount: 0,
+        tableUnlocked: false
     },
 
     // ========== 初始化 ==========
@@ -58,6 +64,8 @@ var GameData = {
         this._cache.orchidCount = this.load(this.KEYS.ORCHID_COUNT, this.DEFAULTS.orchidCount);
         this._cache.chrysanthemumCount = this.load(this.KEYS.CHRYSANTHEMUM_COUNT, this.DEFAULTS.chrysanthemumCount);
         this._cache.seedCount = this.load(this.KEYS.SEED_COUNT, this.DEFAULTS.seedCount);
+        this._cache.moneyCount = this.load(this.KEYS.MONEY_COUNT, this.DEFAULTS.moneyCount);
+        this._cache.tableUnlocked = this.load(this.KEYS.TABLE_UNLOCKED, this.DEFAULTS.tableUnlocked);
     },
 
     // ========== 通用加载方法 ==========
@@ -228,6 +236,32 @@ var GameData = {
         return this._cache.seedCount;
     },
 
+    // ========== 货币数量 ==========
+    getMoneyCount: function() {
+        return this._cache.moneyCount;
+    },
+
+    setMoneyCount: function(value) {
+        this._cache.moneyCount = value;
+        this.save(this.KEYS.MONEY_COUNT, value);
+    },
+
+    addMoneyCount: function(amount) {
+        this._cache.moneyCount += amount;
+        this.save(this.KEYS.MONEY_COUNT, this._cache.moneyCount);
+        return this._cache.moneyCount;
+    },
+
+    // ========== 桌椅解锁状态 ==========
+    isTableUnlocked: function() {
+        return this._cache.tableUnlocked;
+    },
+
+    unlockTable: function() {
+        this._cache.tableUnlocked = true;
+        this.save(this.KEYS.TABLE_UNLOCKED, true);
+    },
+
     // ========== 重置所有数据（调试用） ==========
     resetAll: function() {
         localStorage.removeItem(this.KEYS.GRASS_COUNT);
@@ -239,6 +273,8 @@ var GameData = {
         localStorage.removeItem(this.KEYS.ORCHID_COUNT);
         localStorage.removeItem(this.KEYS.CHRYSANTHEMUM_COUNT);
         localStorage.removeItem(this.KEYS.SEED_COUNT);
+        localStorage.removeItem(this.KEYS.MONEY_COUNT);
+        localStorage.removeItem(this.KEYS.TABLE_UNLOCKED);
         this.loadAll();
     }
 };

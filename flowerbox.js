@@ -78,7 +78,12 @@ function initFlowerboxSystem() {
     if (closeBtn) {
         closeBtn.addEventListener('pointerdown', function(e) {
             e.stopPropagation();
+            e.preventDefault();
             closeFlowerboxModal();
+        });
+        closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
         });
     }
 
@@ -88,12 +93,25 @@ function initFlowerboxSystem() {
                 closeFlowerboxModal();
             }
             e.stopPropagation();
+            e.preventDefault();
+        });
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeFlowerboxModal();
+            }
+            e.stopPropagation();
+            e.preventDefault();
         });
 
         var content = modal.querySelector('.flowerbox-content');
         if (content) {
             content.addEventListener('pointerdown', function(e) {
                 e.stopPropagation();
+                e.preventDefault();
+            });
+            content.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
             });
         }
     }

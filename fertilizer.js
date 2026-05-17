@@ -113,7 +113,12 @@ function initCompostSystem() {
     if (closeBtn) {
         closeBtn.addEventListener('pointerdown', function(e) {
             e.stopPropagation();
+            e.preventDefault();
             closeCompostModal();
+        });
+        closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
         });
     }
 
@@ -123,12 +128,25 @@ function initCompostSystem() {
                 closeCompostModal();
             }
             e.stopPropagation();
+            e.preventDefault();
+        });
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeCompostModal();
+            }
+            e.stopPropagation();
+            e.preventDefault();
         });
 
         var content = modal.querySelector('.compost-content');
         if (content) {
             content.addEventListener('pointerdown', function(e) {
                 e.stopPropagation();
+                e.preventDefault();
+            });
+            content.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
             });
         }
     }
@@ -136,6 +154,12 @@ function initCompostSystem() {
     if (startBtn) {
         startBtn.addEventListener('pointerdown', function(e) {
             e.stopPropagation();
+            e.preventDefault();
+            doCompost();
+        });
+        startBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
             doCompost();
         });
     }

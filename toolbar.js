@@ -30,21 +30,16 @@ function showToolbarToast(message) {
 function startMower() {
     if (!mowerActive) return;
     
-    var grassCount = GameData.getGrassCount();
-    if (grassCount >= 30) {
+    var onScreenGrass = typeof getCurrentGrassCount === 'function' ? getCurrentGrassCount() : 0;
+    if (onScreenGrass >= 30) {
         mowerTimer = setTimeout(function() {
             if (!mowerActive) return;
             harvestAllGrass();
             showToolbarToast('割草机自动除草完成');
             
-            mowerActive = false;
-            updateMowerButton();
-            
-            mowerSleepTimer = setTimeout(function() {
-                mowerActive = true;
-                updateMowerButton();
+            mowerTimer = setTimeout(function() {
                 startMower();
-            }, 30000);
+            }, 1000);
         }, 1000);
     } else {
         mowerTimer = setTimeout(function() {
@@ -203,7 +198,17 @@ function updateSeedDisplay() {
     }
 }
 
+function updateMoneyDisplay() {
+    var count = GameData.getMoneyCount();
+
+    var moneyText = document.getElementById('money-text');
+    if (moneyText) {
+        moneyText.textContent = '货币: ' + count;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initToolbar();
     updateSeedDisplay();
+    updateMoneyDisplay();
 });

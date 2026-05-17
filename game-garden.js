@@ -18,6 +18,7 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.image('background', 'img/background/garden.png');
+    this.load.image('table', 'img/furniture/桌椅.png');
 }
 
 function create() {
@@ -33,6 +34,8 @@ function create() {
         (this.scale.width - bg.displayWidth) / 2,
         (this.scale.height - bg.displayHeight) / 2
     );
+
+    createTable(this);
 }
 
 function update() {

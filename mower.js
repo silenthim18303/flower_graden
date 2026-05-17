@@ -16,7 +16,7 @@ var mowerAnimDuration = 100;
 
 // ========== 兑换配置 ==========
 // 兑换所需肥料数量
-var mowerCost = 50;
+var mowerCost = 20;
 // ==================================
 
 function showMowerToast(message) {
@@ -80,7 +80,7 @@ function doMowerExchange() {
     loadFertilizerCounter();
 
     if (fertilizerCounter < mowerCost) {
-        showMowerToast('肥料不足，需要20袋肥料！');
+        showMowerToast('肥料不足，需要' + mowerCost + '袋肥料！');
         return;
     }
 

@@ -94,6 +94,11 @@ function doSickleExchange() {
     showSickleToast('兑换成功！获得1把镰刀');
 }
 
+function blockSickleEvent(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
 function initSickleSystem() {
     var modal = document.getElementById('sickle-modal');
     var closeBtn = document.getElementById('sickle-close');
@@ -101,9 +106,10 @@ function initSickleSystem() {
 
     if (closeBtn) {
         closeBtn.addEventListener('pointerdown', function(e) {
-            e.stopPropagation();
+            blockSickleEvent(e);
             closeSickleModal();
         });
+        closeBtn.addEventListener('click', blockSickleEvent);
     }
 
     if (modal) {
@@ -111,20 +117,29 @@ function initSickleSystem() {
             if (e.target === modal) {
                 closeSickleModal();
             }
-            e.stopPropagation();
+            blockSickleEvent(e);
+        });
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeSickleModal();
+            }
+            blockSickleEvent(e);
         });
 
         var content = modal.querySelector('.sickle-content');
         if (content) {
-            content.addEventListener('pointerdown', function(e) {
-                e.stopPropagation();
-            });
+            content.addEventListener('pointerdown', blockSickleEvent);
+            content.addEventListener('click', blockSickleEvent);
         }
     }
 
     if (buyBtn) {
         buyBtn.addEventListener('pointerdown', function(e) {
-            e.stopPropagation();
+            blockSickleEvent(e);
+            doSickleExchange();
+        });
+        buyBtn.addEventListener('click', function(e) {
+            blockSickleEvent(e);
             doSickleExchange();
         });
     }

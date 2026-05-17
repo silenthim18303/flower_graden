@@ -21,6 +21,7 @@ function preload() {
     this.load.image('compostbin', 'img/tools/compostbin.png');
     this.load.image('grass_bill', 'img/tools/grass_bill.png');
     this.load.image('flowerbox', 'img/plants/花箱.png');
+    this.load.image('pc', 'img/tools/PC.png');
 }
 
 function create() {
@@ -40,6 +41,7 @@ function create() {
     createCompostbin(this);
     createGrassBill(this);
     createFlowerbox(this);
+    createPc(this);
 }
 
 function update() {
