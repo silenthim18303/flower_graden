@@ -1,0 +1,14 @@
+{
+  "name": "garden_vite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "python build.py",
+    "preview": "http-server dist_build -p 8080"
+  },
+  "devDependencies": {
+    "vite": "^8.0.12"
+  }
+}
