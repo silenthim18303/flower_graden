@@ -163,26 +163,13 @@
     <script src="js/furniture/flowerbox.js"></script>
     <script src="js/furniture/pc.js"></script>
     <script src="js/scenes/game-work.js"></script>
-    <script src="js/core/transition.js"></script>
     <script>
         window.addEventListener('load', function() {
             initGrassDisplay();
             updateSeedDisplay();
         });
-    </script>
-    
-    <!-- 预加载常用页面 -->
-    <iframe id="preloader" style="display:none; width:0; height:0; border:none;"></iframe>
-    <script>
-        // 页面加载完成后开始预加载电商页面（从工坊最常进入电商）
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            
-            setTimeout(() => {
-                preloader.src = 'ecommerce.html';
-                console.log('预加载电商页面...');
-            }, 1000);
-        });
-    </script>
+    <script src="js/core/preload.js
+        src="js/core/transition.js"></script>
+</script>
 </body>
 </html>
