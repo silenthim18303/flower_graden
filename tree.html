@@ -13,7 +13,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-y: auto;
             background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
         }
         #counter-btn {
@@ -122,19 +122,15 @@
             left: 15px;
         }
         .tree-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            margin: 160px auto 80px;
         }
         .tree-card {
             background: linear-gradient(135deg, #228B22, #006400);
             border-radius: 20px;
             padding: 30px;
-            width: 320px;
-            max-width: 90vw;
+            width: 100%;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             border: 3px solid #32CD32;
@@ -194,6 +190,44 @@
         .toast.show {
             opacity: 1;
         }
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100%;
+        }
+        .tutorial-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tutorial-title {
+            color: #228B22;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .tutorial-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .tutorial-content p {
+            margin-bottom: 10px;
+        }
+        .tutorial-content .highlight {
+            color: #FFD700;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -220,6 +254,18 @@
             <div class="tree-desc">摇一摇，看会掉一些什么好东西</div>
             <div class="tree-cooldown" id="cooldown-text"></div>
             <button class="tree-btn" id="tree-shake">摇一摇</button>
+        </div>
+        <div class="tutorial-card">
+            <div class="tutorial-title">使用教程</div>
+            <div class="tutorial-content">
+                <p>芒果树是一棵神奇的树，摇一摇可能会掉下好东西！</p>
+                <p>每次摇树有 <span class="highlight">50%</span> 的概率掉落一袋肥料。</p>
+                <p>摇树后需要等待 <span class="highlight">5分钟</span> 冷却时间才能再次摇树。</p>
+                <p>肥料可以用来：</p>
+                <p>1. 在商店兑换随机种子（5肥料）</p>
+                <p>2. 在商店兑换镰刀（10肥料）</p>
+                <p>3. 在商店兑换割草机（20肥料）</p>
+            </div>
         </div>
     </div>
     <div class="toast" id="toast"></div>

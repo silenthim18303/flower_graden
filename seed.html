@@ -13,7 +13,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-y: auto;
             background: linear-gradient(180deg, #8B4513 0%, #654321 100%);
         }
         #counter-btn {
@@ -122,19 +122,15 @@
             left: 15px;
         }
         .seed-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            margin: 160px auto 80px;
         }
         .seed-card {
             background: linear-gradient(135deg, #8B4513, #654321);
             border-radius: 20px;
             padding: 30px;
-            width: 320px;
-            max-width: 90vw;
+            width: 100%;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             border: 3px solid #A0522D;
@@ -197,6 +193,44 @@
         .toast.show {
             opacity: 1;
         }
+        .seed-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100%;
+        }
+        .tutorial-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tutorial-title {
+            color: #8B4513;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .tutorial-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .tutorial-content p {
+            margin-bottom: 10px;
+        }
+        .tutorial-content .highlight {
+            color: #32CD32;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +259,17 @@
                 <p>需要消耗: <span>5</span> 袋肥料</p>
             </div>
             <button class="seed-btn" id="seed-buy">兑换种子</button>
+        </div>
+        <div class="tutorial-card">
+            <div class="tutorial-title">使用教程</div>
+            <div class="tutorial-content">
+                <p>随机种子是一种特殊的种子，可以种出稀有花卉！</p>
+                <p>兑换需要消耗 <span class="highlight">5袋肥料</span>。</p>
+                <p>使用种子后，有概率种出以下花卉：</p>
+                <p>1. <span class="highlight">星月相随</span> - 稀有花卉，可出售获得10金币</p>
+                <p>2. <span class="highlight">过路黄</span> - 珍贵花卉，收集到花箱中</p>
+                <p>使用方法：回到主页，点击底部工具栏的种子按钮即可种植。</p>
+            </div>
         </div>
     </div>
     <div class="toast" id="toast"></div>

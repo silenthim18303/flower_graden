@@ -288,7 +288,7 @@
                 <img class="shop-item-img" src="img/furniture/桌椅.png" alt="桌椅">
                 <div>
                     <div class="shop-item-name">桌椅套装</div>
-                    <div class="shop-item-price">价格: 50金币</div>
+                    <div class="shop-item-price">价格: 80金币</div>
                 </div>
             </div>
             <button class="shop-item-btn" id="table-buy">购买</button>
@@ -302,6 +302,16 @@
                 </div>
             </div>
             <button class="shop-item-btn" id="birdcage-buy">购买</button>
+        </div>
+        <div class="shop-item">
+            <div class="shop-item-info">
+                <img class="shop-item-img" src="img/furniture/水池.png" alt="水池">
+                <div>
+                    <div class="shop-item-name">装饰水池</div>
+                    <div class="shop-item-price">价格: 100金币</div>
+                </div>
+            </div>
+            <button class="shop-item-btn" id="pool-buy">购买</button>
         </div>
     </div>
     <div class="shop-container">
@@ -335,6 +345,16 @@
                 </div>
             </div>
             <button class="shop-item-btn" id="starflower-sell">出售</button>
+        </div>
+        <div class="shop-item">
+            <div class="shop-item-info">
+                <img class="shop-item-img" src="img/plants/过路黄.png" alt="过路黄">
+                <div>
+                    <div class="shop-item-name">过路黄</div>
+                    <div class="shop-item-price">兑换: 10金币</div>
+                </div>
+            </div>
+            <button class="shop-item-btn" id="passerbyflower-sell">出售</button>
         </div>
     </div>
     <div class="flower-card">
@@ -470,6 +490,23 @@
                 showToast('出售成功！获得10金币');
             });
 
+            var passerbyflowerBtn = document.getElementById('passerbyflower-sell');
+            if (passerbyflowerBtn) {
+                passerbyflowerBtn.addEventListener('click', function() {
+                    var flowerCollection = GameData.getFlowerCollection();
+                    var count = flowerCollection['passerbyflower'] ? flowerCollection['passerbyflower'].count : 0;
+                    if (count <= 0) {
+                        showToast('过路黄不足');
+                        return;
+                    }
+                    flowerCollection['passerbyflower'].count--;
+                    GameData.saveObject('flowerCollection', flowerCollection);
+                    GameData.addMoneyCount(10);
+                    updateAllDisplays();
+                    showToast('出售成功！获得10金币');
+                });
+            }
+
             var tableBuyBtn = document.getElementById('table-buy');
             if (tableBuyBtn) {
                 if (GameData.isTableUnlocked()) {
@@ -482,11 +519,11 @@
                         return;
                     }
                     var money = GameData.getMoneyCount();
-                    if (money < 50) {
+                    if (money < 80) {
                         showToast('金币不足');
                         return;
                     }
-                    GameData.addMoneyCount(-50);
+                    GameData.addMoneyCount(-80);
                     GameData.unlockTable();
                     tableBuyBtn.disabled = true;
                     tableBuyBtn.textContent = '已拥有';
@@ -517,6 +554,31 @@
                     birdcageBuyBtn.textContent = '已拥有';
                     updateAllDisplays();
                     showToast('购买成功！鸟笼已放置到花园');
+                });
+            }
+
+            var poolBuyBtn = document.getElementById('pool-buy');
+            if (poolBuyBtn) {
+                if (GameData.isPoolUnlocked()) {
+                    poolBuyBtn.disabled = true;
+                    poolBuyBtn.textContent = '已拥有';
+                }
+                poolBuyBtn.addEventListener('click', function() {
+                    if (GameData.isPoolUnlocked()) {
+                        showToast('你已经拥有水池了');
+                        return;
+                    }
+                    var money = GameData.getMoneyCount();
+                    if (money < 100) {
+                        showToast('金币不足');
+                        return;
+                    }
+                    GameData.addMoneyCount(-100);
+                    GameData.unlockPool();
+                    poolBuyBtn.disabled = true;
+                    poolBuyBtn.textContent = '已拥有';
+                    updateAllDisplays();
+                    showToast('购买成功！水池已放置到花园');
                 });
             }
         }

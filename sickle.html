@@ -13,7 +13,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-y: auto;
             background: linear-gradient(180deg, #4a4a4a 0%, #2d2d2d 100%);
         }
         #counter-btn {
@@ -122,19 +122,15 @@
             left: 15px;
         }
         .sickle-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            margin: 160px auto 80px;
         }
         .sickle-card {
             background: linear-gradient(135deg, #4a4a4a, #2d2d2d);
             border-radius: 20px;
             padding: 30px;
-            width: 320px;
-            max-width: 90vw;
+            width: 100%;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             border: 3px solid #666;
@@ -197,6 +193,44 @@
         .toast.show {
             opacity: 1;
         }
+        .sickle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100%;
+        }
+        .tutorial-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tutorial-title {
+            color: #4a4a4a;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .tutorial-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .tutorial-content p {
+            margin-bottom: 10px;
+        }
+        .tutorial-content .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +259,16 @@
                 <p>需要消耗: <span>10</span> 袋肥料</p>
             </div>
             <button class="sickle-btn" id="sickle-buy">兑换镰刀</button>
+        </div>
+        <div class="tutorial-card">
+            <div class="tutorial-title">使用教程</div>
+            <div class="tutorial-content">
+                <p>镰刀是一个强大的工具，可以 <span class="highlight">一键收割</span> 屏幕上所有的杂草！</p>
+                <p>兑换需要消耗 <span class="highlight">10袋肥料</span>。</p>
+                <p>镰刀兑换后永久拥有，可以在主页工具栏中使用。</p>
+                <p>使用方法：回到主页，点击底部工具栏的镰刀按钮即可收割所有杂草。</p>
+                <p>收集的杂草可以用来堆肥，30个杂草可以堆肥成1袋肥料。</p>
+            </div>
         </div>
     </div>
     <div class="toast" id="toast"></div>

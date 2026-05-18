@@ -16,7 +16,8 @@ var GameData = {
         SEED_COUNT: 'seedCount',
         MONEY_COUNT: 'moneyCount',
         TABLE_UNLOCKED: 'tableUnlocked',
-        BIRD_CAGE_UNLOCKED: 'birdCageUnlocked'
+        BIRD_CAGE_UNLOCKED: 'birdCageUnlocked',
+        POOL_UNLOCKED: 'poolUnlocked'
     },
 
     // ========== 默认值 ==========
@@ -31,8 +32,9 @@ var GameData = {
         chrysanthemumCount: 0,
         seedCount: 0,
         moneyCount: 0,
-        tableUnlocked: false,
-        birdCageUnlocked: false
+        tableUnlocked: true,
+        birdCageUnlocked: true,
+        poolUnlocked: true
     },
 
     // ========== 内存缓存 ==========
@@ -48,7 +50,8 @@ var GameData = {
         seedCount: 0,
         moneyCount: 0,
         tableUnlocked: false,
-        birdCageUnlocked: false
+        birdCageUnlocked: false,
+        poolUnlocked: false
     },
 
     // ========== 初始化 ==========
@@ -70,6 +73,7 @@ var GameData = {
         this._cache.moneyCount = this.load(this.KEYS.MONEY_COUNT, this.DEFAULTS.moneyCount);
         this._cache.tableUnlocked = this.load(this.KEYS.TABLE_UNLOCKED, this.DEFAULTS.tableUnlocked);
         this._cache.birdCageUnlocked = this.load(this.KEYS.BIRD_CAGE_UNLOCKED, this.DEFAULTS.birdCageUnlocked);
+        this._cache.poolUnlocked = this.load(this.KEYS.POOL_UNLOCKED, this.DEFAULTS.poolUnlocked);
     },
 
     // ========== 通用加载方法 ==========
@@ -276,6 +280,16 @@ var GameData = {
         this.save(this.KEYS.BIRD_CAGE_UNLOCKED, true);
     },
 
+    // ========== 水池解锁状态 ==========
+    isPoolUnlocked: function() {
+        return this._cache.poolUnlocked;
+    },
+
+    unlockPool: function() {
+        this._cache.poolUnlocked = true;
+        this.save(this.KEYS.POOL_UNLOCKED, true);
+    },
+
     // ========== 重置所有数据（调试用） ==========
     resetAll: function() {
         localStorage.removeItem(this.KEYS.GRASS_COUNT);
@@ -290,6 +304,7 @@ var GameData = {
         localStorage.removeItem(this.KEYS.MONEY_COUNT);
         localStorage.removeItem(this.KEYS.TABLE_UNLOCKED);
         localStorage.removeItem(this.KEYS.BIRD_CAGE_UNLOCKED);
+        localStorage.removeItem(this.KEYS.POOL_UNLOCKED);
         this.loadAll();
     }
 };

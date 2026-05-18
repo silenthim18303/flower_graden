@@ -13,7 +13,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-y: auto;
             background: linear-gradient(180deg, #2E8B57 0%, #006400 100%);
         }
         #counter-btn {
@@ -122,19 +122,15 @@
             left: 15px;
         }
         .mower-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            margin: 160px auto 80px;
         }
         .mower-card {
             background: linear-gradient(135deg, #2E8B57, #006400);
             border-radius: 20px;
             padding: 30px;
-            width: 320px;
-            max-width: 90vw;
+            width: 100%;
             text-align: center;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             border: 3px solid #3CB371;
@@ -197,6 +193,44 @@
         .toast.show {
             opacity: 1;
         }
+        .mower-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100%;
+        }
+        .tutorial-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tutorial-title {
+            color: #2E8B57;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .tutorial-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .tutorial-content p {
+            margin-bottom: 10px;
+        }
+        .tutorial-content .highlight {
+            color: #FFA500;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -225,6 +259,16 @@
                 <p>需要消耗: <span>20</span> 袋肥料</p>
             </div>
             <button class="mower-btn" id="mower-buy">兑换割草机</button>
+        </div>
+        <div class="tutorial-card">
+            <div class="tutorial-title">使用教程</div>
+            <div class="tutorial-content">
+                <p>割草机是一个自动化工具，可以 <span class="highlight">自动收割</span> 杂草！</p>
+                <p>兑换需要消耗 <span class="highlight">20袋肥料</span>。</p>
+                <p>割草机兑换后永久拥有，可以在主页工具栏中开启/关闭。</p>
+                <p>工作原理：当屏幕上的杂草数量达到 <span class="highlight">30个</span> 时，割草机会在1秒后自动收割所有杂草。</p>
+                <p>使用方法：回到主页，点击底部工具栏的割草机按钮开启自动除草功能。</p>
+            </div>
         </div>
     </div>
     <div class="toast" id="toast"></div>

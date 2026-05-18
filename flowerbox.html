@@ -179,6 +179,37 @@
             text-align: center;
             opacity: 0.8;
         }
+        .tutorial-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 80px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .tutorial-title {
+            color: #FF1493;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .tutorial-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .tutorial-content p {
+            margin-bottom: 10px;
+        }
+        .tutorial-content .highlight {
+            color: #FF1493;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -203,6 +234,18 @@
         <div class="flowerbox-title">我的花箱</div>
         <div class="flowerbox-list" id="flowerbox-list">
             <div class="flowerbox-empty">还没有收集到花哦~</div>
+        </div>
+    </div>
+    <div class="tutorial-card">
+        <div class="tutorial-title">花箱介绍</div>
+        <div class="tutorial-content">
+            <p>花箱是用来展示你收集的所有花卉的地方！</p>
+            <p>收集花卉的方法：</p>
+            <p>1. <span class="highlight">蝴蝶兰</span> - 在主页自然生长，点击收集</p>
+            <p>2. <span class="highlight">菊花</span> - 使用肥料施肥后生长</p>
+            <p>3. <span class="highlight">星月相随</span> - 使用随机种子种植获得</p>
+            <p>4. <span class="highlight">过路黄</span> - 使用随机种子种植获得</p>
+            <p>收集到的花卉可以在电商页面出售换取金币，也可以收藏在花箱中展示。</p>
         </div>
     </div>
     <script src="js/core/gameData.js"></script>
