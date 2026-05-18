@@ -92,31 +92,38 @@ flowe_graden_new/
 ├── mower.html          # 割草机兑换页面
 ├── compost.html        # 堆肥桶页面
 ├── flowerbox.html      # 花箱展示页面
-├── game.js             # 主页游戏配置
-├── game-shop.js        # 商店游戏配置
-├── game-work.js        # 工坊游戏配置
-├── game-garden.js      # 花园游戏配置
-├── gameData.js         # 数据管理（localStorage）
-├── toolbar.js          # 工具栏系统
-├── grass.js            # 杂草系统
-├── fertilizer.js       # 肥料系统
-├── tree.js             # 芒果树系统（跳转逻辑）
-├── orchid.js           # 蝴蝶兰系统
-├── chrysanthemum.js    # 菊花系统
-├── starflower.js       # 星月相随系统
-├── passerbyflower.js   # 过路黄系统
-├── sickle.js           # 镰刀系统（跳转逻辑）
-├── seed.js             # 种子系统（跳转逻辑）
-├── mower.js            # 割草机系统（跳转逻辑）
-├── flowerbox.js        # 花箱系统（跳转逻辑）
-├── compostbin.js       # 堆肥桶系统（跳转逻辑）
-├── pc.js               # 电脑系统（跳转逻辑）
-├── table.js            # 桌椅家具系统
-├── birdcage.js         # 鸟笼家具系统
-├── mark_bill.js        # 商店告示牌
-├── work.js             # 工坊告示牌
-├── garden_bill.js      # 花园告示牌
-├── grass_bill.js       # 返回告示牌
+├── js/                 # JavaScript文件
+│   ├── core/           # 核心文件
+│   │   ├── gameData.js # 数据管理（localStorage）
+│   │   └── toolbar.js  # 工具栏系统
+│   ├── scenes/         # 场景配置
+│   │   ├── game.js     # 主页游戏配置
+│   │   ├── game-shop.js    # 商店游戏配置
+│   │   ├── game-work.js    # 工坊游戏配置
+│   │   └── game-garden.js  # 花园游戏配置
+│   ├── plants/         # 植物系统
+│   │   ├── grass.js    # 杂草系统
+│   │   ├── orchid.js   # 蝴蝶兰系统
+│   │   ├── chrysanthemum.js  # 菊花系统
+│   │   ├── starflower.js     # 星月相随系统
+│   │   └── passerbyflower.js # 过路黄系统
+│   ├── tools/          # 道具系统
+│   │   ├── sickle.js   # 镰刀系统（跳转逻辑）
+│   │   ├── seed.js     # 种子系统（跳转逻辑）
+│   │   ├── mower.js    # 割草机系统（跳转逻辑）
+│   │   ├── tree.js     # 芒果树系统（跳转逻辑）
+│   │   └── fertilizer.js   # 肥料系统
+│   ├── furniture/      # 家具/设施系统
+│   │   ├── table.js    # 桌椅家具系统
+│   │   ├── birdcage.js # 鸟笼家具系统
+│   │   ├── compostbin.js   # 堆肥桶系统（跳转逻辑）
+│   │   ├── flowerbox.js    # 花箱系统（跳转逻辑）
+│   │   └── pc.js       # 电脑系统（跳转逻辑）
+│   └── bills/          # 告示牌系统
+│       ├── mark_bill.js    # 商店告示牌
+│       ├── work.js         # 工坊告示牌
+│       ├── garden_bill.js  # 花园告示牌
+│       └── grass_bill.js   # 返回告示牌
 ├── img/                # 图片资源
 │   ├── background/     # 背景图片
 │   ├── plants/         # 植物图片
@@ -171,8 +178,8 @@ flowe_graden_new/
 
 ## 开发说明
 
-- 所有游戏数据通过 `gameData.js` 统一管理
-- 每个游戏系统独立一个 JS 文件
+- 所有游戏数据通过 `js/core/gameData.js` 统一管理
+- 每个游戏系统独立一个 JS 文件，按功能分类存放在 `js/` 目录下
 - 交互功能使用独立 HTML 页面实现，避免点击穿透
 - 工具栏自适应小屏手机（使用 vw 单位）
 - 家具系统通过 GameData 布尔值控制显示
