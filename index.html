@@ -195,5 +195,33 @@
     <script src="js/plants/starflower.js"></script>
     <script src="js/plants/passerbyflower.js"></script>
     <script src="js/scenes/game.js"></script>
+    <script src="js/core/transition.js"></script>
+    
+    <!-- 预加载常用页面 -->
+    <iframe id="preloader" style="display:none; width:0; height:0; border:none;"></iframe>
+    <script>
+        // 页面加载完成后开始预加载
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            
+            // 先预加载电商页面（最常用）
+            setTimeout(() => {
+                preloader.src = 'ecommerce.html';
+                console.log('预加载电商页面...');
+            }, 1000);
+            
+            // 2秒后预加载花园页面
+            setTimeout(() => {
+                preloader.src = 'garden.html';
+                console.log('预加载花园页面...');
+            }, 3000);
+            
+            // 4秒后预加载商店页面
+            setTimeout(() => {
+                preloader.src = 'shop.html';
+                console.log('预加载商店页面...');
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

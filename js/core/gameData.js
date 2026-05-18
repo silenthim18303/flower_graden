@@ -32,9 +32,9 @@ var GameData = {
         chrysanthemumCount: 0,
         seedCount: 0,
         moneyCount: 0,
-        tableUnlocked: true,
-        birdCageUnlocked: true,
-        poolUnlocked: true
+        tableUnlocked: false,
+        birdCageUnlocked: false,
+        poolUnlocked: false
     },
 
     // ========== 内存缓存 ==========
