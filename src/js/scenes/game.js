@@ -14,7 +14,20 @@ var config = {
     }
 };
 
-var game = new Phaser.Game(config);
+var game = null;
+
+function initGame() {
+    if (game) {
+        return;
+    }
+    game = new Phaser.Game(config);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGame);
+} else {
+    initGame();
+}
 
 function preload() {
     this.load.image('background', 'img/background/back1.png');

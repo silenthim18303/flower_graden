@@ -29,6 +29,7 @@ var counterText = null;
 var currentGrassCount = 0;
 var grassScene = null;
 var regrowTimer = null;
+var visibilityListenerAdded = false;
 
 function getCurrentGrassCount() {
     return currentGrassCount;
@@ -195,20 +196,23 @@ function createGrass(scene) {
     spawnSingleGrass(scene);
     startGrowTimer();
 
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            if (regrowTimer) {
-                regrowTimer.remove();
-                regrowTimer = null;
+    if (!visibilityListenerAdded) {
+        visibilityListenerAdded = true;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (regrowTimer) {
+                    regrowTimer.remove();
+                    regrowTimer = null;
+                }
+                clearAllGrass();
+            } else {
+                if (grassScene && currentGrassCount < grassMaxCount) {
+                    spawnSingleGrass(grassScene);
+                    startGrowTimer();
+                }
             }
-            clearAllGrass();
-        } else {
-            if (currentGrassCount < grassMaxCount) {
-                spawnSingleGrass(grassScene);
-                startGrowTimer();
-            }
-        }
-    });
+        });
+    }
 }
 
 function harvestAllGrass() {

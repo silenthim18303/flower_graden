@@ -48,6 +48,8 @@ const scripts = [
 let loadedCount = 0;
 const totalItems = resources.length + scripts.length;
 
+const loadedScripts = new Set();
+
 function updateProgress(text) {
   loadedCount++;
   const progress = Math.floor((loadedCount / totalItems) * 100);
@@ -79,13 +81,21 @@ function preloadImage(src) {
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
+    if (loadedScripts.has(src)) {
+      updateProgress('加载脚本');
+      resolve();
+      return;
+    }
+    
     const script = document.createElement('script');
     script.src = src;
     script.onload = () => {
+      loadedScripts.add(src);
       updateProgress('加载脚本');
       resolve();
     };
     script.onerror = () => {
+      loadedScripts.add(src);
       updateProgress('加载脚本');
       resolve();
     };
@@ -117,10 +127,21 @@ function quickHideLoadingScreen() {
 
 function loadScriptQuick(src) {
   return new Promise((resolve, reject) => {
+    if (loadedScripts.has(src)) {
+      resolve();
+      return;
+    }
+    
     const script = document.createElement('script');
     script.src = src;
-    script.onload = resolve;
-    script.onerror = resolve;
+    script.onload = () => {
+      loadedScripts.add(src);
+      resolve();
+    };
+    script.onerror = () => {
+      loadedScripts.add(src);
+      resolve();
+    };
     document.body.appendChild(script);
   });
 }
