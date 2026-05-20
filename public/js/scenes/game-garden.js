@@ -21,6 +21,8 @@ function preload() {
     this.load.image('table', 'img/furniture/桌椅.png');
     this.load.image('birdCage', 'img/furniture/鸟笼.png');
     this.load.image('pool', 'img/furniture/水池.png');
+    this.load.image('swing', 'img/furniture/秋千.png');
+    this.load.image('dog', 'img/furniture/狗.png');
     this.load.video('dog', 'img/animals/dog.mp4');
 }
 
@@ -41,6 +43,7 @@ function create() {
     createTable(this);
     createBirdCage(this);
     createPool(this);
+    createSwing(this);
     createDog(this);
 }
 

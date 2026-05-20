@@ -1,41 +1,21 @@
 // ========== 小狗配置区域 ==========
-// 位置X：调整数值可以左右移动小狗 (0=最左边, 540=居中, 1080=最右边)
-var dogX = 600;
-// 位置Y：调整数值可以上下移动小狗 (0=最顶部, 960=居中, 1920=最底部)
-var dogY = 1600;
-// 缩放比例：调整数值可以改变小狗大小 (0.5=缩小一半, 1.0=原始大小, 2.0=放大一倍)
-var dogScale = 0.3;
-// ==================================
+var dogX = 200;            // 小狗X坐标
+var dogY = 1600;            // 小狗Y坐标
+var dogScale = 0.15;        // 小狗缩放比例
+var dogClickScale = 0.9;   // 点击时的缩放比例
+var dogAnimDuration = 200; // 动画持续时间（毫秒）
 
-// ========== 点击动画配置 ==========
-// 缩放倍数：点击后缩放到的比例
-var dogClickScale = 0.95;
-// 动画时长：单次动画持续时间（毫秒）
-var dogAnimDuration = 100;
-// ==================================
-
+// ========== 小狗创建函数 ==========
 function createDog(scene) {
-    if (!GameData || !GameData.isDogUnlocked || !GameData.isDogUnlocked()) {
-        console.log('Dog is not unlocked');
-        return;
-    }
+    // 检查是否已解锁
+    if (!GameData.isDogUnlocked()) return;
     
-    // 直接创建视频元素，不使用Phaser的视频加载系统
-    var videoElement = document.createElement('video');
-    videoElement.src = 'img/furniture/dog.webm';
-    videoElement.loop = true;
-    videoElement.muted = true;
-    videoElement.autoplay = true;
-    videoElement.style.width = '100%';
-    videoElement.style.height = '100%';
-    videoElement.style.objectFit = 'contain';
-    
-    // 创建Phaser DOM元素
-    var dog = scene.add.dom(dogX, dogY, videoElement);
+    // 创建小狗精灵
+    var dog = scene.add.sprite(dogX, dogY, 'dog');
     dog.setScale(dogScale);
     dog.setInteractive();
     
-    // 点击动画
+    // 点击事件 - 跳转到小狗互动页面
     var isAnimating = false;
     dog.on('pointerdown', function() {
         if (isAnimating) return;
@@ -49,6 +29,8 @@ function createDog(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
+                // 跳转到小狗互动页面
+                window.location.href = './dog.html';
             }
         });
     });

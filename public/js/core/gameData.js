@@ -18,25 +18,33 @@ var GameData = {
         TABLE_UNLOCKED: 'tableUnlocked',
         BIRD_CAGE_UNLOCKED: 'birdCageUnlocked',
         POOL_UNLOCKED: 'poolUnlocked',
-        DOG_UNLOCKED: 'dogUnlocked'
+        SWING_UNLOCKED: 'swingUnlocked',
+        DOG_UNLOCKED: 'dogUnlocked',
+        DOG_FRIENDSHIP: 'dogFriendship',
+        DOG_FOOD_COUNT: 'dogFoodCount',
+        DOG_GIFT_LAST_CLAIM: 'dogGiftLastClaim'
     },
 
     // ========== 默认值 ==========
     DEFAULTS: {
-        grassCounter: 0,
-        fertilizerCounter: 0,
-        sickleUnlocked: false,
-        mowerUnlocked: false,
+        grassCounter: 999,
+        fertilizerCounter: 999,
+        sickleUnlocked: true,
+        mowerUnlocked: true,
         lastShakeTime: 0,
         flowerCollection: {},
         orchidCount: 0,
         chrysanthemumCount: 0,
-        seedCount: 0,
-        moneyCount: 0,
-        tableUnlocked: false,
-        birdCageUnlocked: false,
-        poolUnlocked: false,
-        dogUnlocked: true
+        seedCount: 999,
+        moneyCount: 999,
+        tableUnlocked: true,
+        birdCageUnlocked: true,
+        poolUnlocked: true,
+        swingUnlocked: false,
+        dogUnlocked: true,
+        dogFriendship: 0,
+        dogFoodCount: 0,
+        dogGiftLastClaim: 0
     },
 
     // ========== 内存缓存 ==========
@@ -53,7 +61,11 @@ var GameData = {
         moneyCount: 0,
         tableUnlocked: false,
         birdCageUnlocked: false,
-        poolUnlocked: false
+        poolUnlocked: false,
+        swingUnlocked: false,
+        dogUnlocked: false,
+        dogFriendship: 0,
+        dogFoodCount: 0
     },
 
     // ========== 初始化 ==========
@@ -76,7 +88,11 @@ var GameData = {
         this._cache.tableUnlocked = this.load(this.KEYS.TABLE_UNLOCKED, this.DEFAULTS.tableUnlocked);
         this._cache.birdCageUnlocked = this.load(this.KEYS.BIRD_CAGE_UNLOCKED, this.DEFAULTS.birdCageUnlocked);
         this._cache.poolUnlocked = this.load(this.KEYS.POOL_UNLOCKED, this.DEFAULTS.poolUnlocked);
+        this._cache.swingUnlocked = this.load(this.KEYS.SWING_UNLOCKED, this.DEFAULTS.swingUnlocked);
         this._cache.dogUnlocked = this.load(this.KEYS.DOG_UNLOCKED, this.DEFAULTS.dogUnlocked);
+        this._cache.dogFriendship = this.load(this.KEYS.DOG_FRIENDSHIP, this.DEFAULTS.dogFriendship);
+        this._cache.dogFoodCount = this.load(this.KEYS.DOG_FOOD_COUNT, this.DEFAULTS.dogFoodCount);
+        this._cache.dogGiftLastClaim = this.load(this.KEYS.DOG_GIFT_LAST_CLAIM, this.DEFAULTS.dogGiftLastClaim);
     },
 
     // ========== 通用加载方法 ==========
@@ -293,6 +309,18 @@ var GameData = {
         this.save(this.KEYS.POOL_UNLOCKED, true);
     },
 
+
+
+    // ========== 秋千解锁状态 ==========
+    isSwingUnlocked: function() {
+        return this._cache.swingUnlocked;
+    },
+
+    unlockSwing: function() {
+        this._cache.swingUnlocked = true;
+        this.save(this.KEYS.SWING_UNLOCKED, true);
+    },
+
     // ========== 小狗解锁状态 ==========
     isDogUnlocked: function() {
         return this._cache.dogUnlocked;
@@ -301,6 +329,100 @@ var GameData = {
     unlockDog: function() {
         this._cache.dogUnlocked = true;
         this.save(this.KEYS.DOG_UNLOCKED, true);
+    },
+
+    // ========== 小狗好感度系统 ==========
+    getDogFriendship: function() {
+        return this._cache.dogFriendship;
+    },
+
+    addDogFriendship: function(amount) {
+        // 确保当前好感度是数字
+        if (typeof this._cache.dogFriendship !== 'number' || isNaN(this._cache.dogFriendship)) {
+            this._cache.dogFriendship = 0;
+        }
+        // 确保增量是数字
+        if (typeof amount !== 'number' || isNaN(amount)) {
+            amount = 0;
+        }
+        this._cache.dogFriendship += amount;
+        // 限制最大好感度为200
+        if (this._cache.dogFriendship > 200) {
+            this._cache.dogFriendship = 200;
+        }
+        // 确保不小于0
+        if (this._cache.dogFriendship < 0) {
+            this._cache.dogFriendship = 0;
+        }
+        this.save(this.KEYS.DOG_FRIENDSHIP, this._cache.dogFriendship);
+    },
+
+    setDogFriendship: function(value) {
+        this._cache.dogFriendship = value;
+        if (this._cache.dogFriendship < 0) {
+            this._cache.dogFriendship = 0;
+        } else if (this._cache.dogFriendship > 200) {
+            this._cache.dogFriendship = 200;
+        }
+        this.save(this.KEYS.DOG_FRIENDSHIP, this._cache.dogFriendship);
+    },
+
+    // ========== 狗粮系统 ==========
+    getDogFoodCount: function() {
+        return this._cache.dogFoodCount;
+    },
+
+    addDogFoodCount: function(amount) {
+        this._cache.dogFoodCount += amount;
+        if (this._cache.dogFoodCount < 0) {
+            this._cache.dogFoodCount = 0;
+        }
+        this.save(this.KEYS.DOG_FOOD_COUNT, this._cache.dogFoodCount);
+    },
+
+    setDogFoodCount: function(value) {
+        this._cache.dogFoodCount = value;
+        if (this._cache.dogFoodCount < 0) {
+            this._cache.dogFoodCount = 0;
+        }
+        this.save(this.KEYS.DOG_FOOD_COUNT, this._cache.dogFoodCount);
+    },
+
+    // ========== 小狗满级礼包系统 ==========
+    canClaimDogGift: function() {
+        // 检查是否满级（200好感度）
+        if (this._cache.dogFriendship < 200) {
+            return false;
+        }
+        // 检查是否过了24小时
+        const now = Date.now();
+        const lastClaim = this._cache.dogGiftLastClaim;
+        const oneDay = 24 * 60 * 60 * 1000; // 24小时毫秒数
+        return now - lastClaim >= oneDay;
+    },
+
+    claimDogGift: function() {
+        if (!this.canClaimDogGift()) {
+            return false;
+        }
+        // 添加5袋种子
+        this.addSeedCount(5);
+        // 更新领取时间
+        this._cache.dogGiftLastClaim = Date.now();
+        this.save(this.KEYS.DOG_GIFT_LAST_CLAIM, this._cache.dogGiftLastClaim);
+        return true;
+    },
+
+    getDogGiftRemainingTime: function() {
+        if (this._cache.dogFriendship < 200) {
+            return -1; // 未满级
+        }
+        const now = Date.now();
+        const lastClaim = this._cache.dogGiftLastClaim;
+        const oneDay = 24 * 60 * 60 * 1000;
+        const nextClaimTime = lastClaim + oneDay;
+        const remaining = nextClaimTime - now;
+        return remaining > 0 ? remaining : 0;
     },
 
     // ========== 重置所有数据（调试用） ==========

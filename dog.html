@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小狗互动</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('./img/background/garden.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        #dog-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        
+        #dog-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #dog-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        
+        #dog-friendship {
+            font-size: 18px;
+            color: #666;
+            margin: 0 0 15px 0;
+        }
+        
+        #friendship-bar-container {
+            width: 200px;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            margin: 0 auto 20px auto;
+            overflow: hidden;
+        }
+        
+        #friendship-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        #dog-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        #dog-image:hover {
+            transform: scale(1.1);
+        }
+        
+        #gift-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        #gift-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin: 0 0 20px 0;
+        }
+        
+        .gift-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .gift-item:last-child {
+            border-bottom: none;
+        }
+        
+        .gift-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .gift-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 10px;
+        }
+        
+        .gift-name {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .gift-friendship {
+            font-size: 14px;
+            color: #ff6b6b;
+            margin-top: 5px;
+        }
+        
+        .gift-count {
+            font-size: 14px;
+            color: #666;
+            margin-right: 10px;
+        }
+        
+        .gift-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        
+        .gift-btn:hover {
+            background: #45b7aa;
+        }
+        
+        .gift-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        #nav-back {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        #nav-back:hover {
+            background-color: #45a049;
+        }
+
+        /* 满级礼包样式 */
+        .gift-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto 80px auto; /* 增加底部边距，避免被返回按钮挡住 */
+            max-width: 500px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .gift-box-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .gift-box-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .gift-box-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: white;
+            padding: 5px;
+        }
+
+        .gift-box-desc {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .gift-box-requirement {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .gift-box-btn {
+            margin-left: auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .gift-box-btn:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+
+        .gift-box-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .gift-box-cooldown {
+            font-size: 12px;
+            text-align: center;
+            opacity: 0.9;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="dog-container">
+        <div id="dog-info">
+            <div id="dog-name">旺财</div>
+            <div id="dog-friendship">好感度: 0/200</div>
+            <div id="friendship-bar-container">
+                <div id="friendship-bar"></div>
+            </div>
+        </div>
+        
+        <img id="dog-image" src="./img/furniture/狗.png" alt="小狗">
+        
+        <div id="gift-section">
+            <div id="gift-title">送礼物给旺财</div>
+            
+            <div class="gift-item">
+                <div class="gift-info">
+                    <img class="gift-img" src="./img/plants/蝴蝶兰.png" alt="蝴蝶兰">
+                    <div>
+                        <div class="gift-name">蝴蝶兰</div>
+                        <div class="gift-friendship">+1 好感度</div>
+                    </div>
+                </div>
+                <div>
+                    <span class="gift-count" id="orchid-count">0</span>
+                    <button class="gift-btn" id="give-orchid">赠送</button>
+                </div>
+            </div>
+            
+            <div class="gift-item">
+                <div class="gift-info">
+                    <img class="gift-img" src="./img/plants/菊花.png" alt="菊花">
+                    <div>
+                        <div class="gift-name">菊花</div>
+                        <div class="gift-friendship">+2 好感度</div>
+                    </div>
+                </div>
+                <div>
+                    <span class="gift-count" id="chrysanthemum-count">0</span>
+                    <button class="gift-btn" id="give-chrysanthemum">赠送</button>
+                </div>
+            </div>
+            
+            <div class="gift-item">
+                <div class="gift-info">
+                    <img class="gift-img" src="./img/plants/星月相随.png" alt="星月相随">
+                    <div>
+                        <div class="gift-name">星月相随</div>
+                        <div class="gift-friendship">+5 好感度</div>
+                    </div>
+                </div>
+                <div>
+                    <span class="gift-count" id="starflower-count">0</span>
+                    <button class="gift-btn" id="give-starflower">赠送</button>
+                </div>
+            </div>
+            
+            <div class="gift-item">
+                <div class="gift-info">
+                    <img class="gift-img" src="./img/plants/过路黄.png" alt="过路黄">
+                    <div>
+                        <div class="gift-name">过路黄</div>
+                        <div class="gift-friendship">+5 好感度</div>
+                    </div>
+                </div>
+                <div>
+                    <span class="gift-count" id="passerbyflower-count">0</span>
+                    <button class="gift-btn" id="give-passerbyflower">赠送</button>
+                </div>
+            </div>
+            <div class="gift-item">
+                <div class="gift-info">
+                    <img class="gift-img" src="./img/tools/狗粮.png" alt="狗粮">
+                    <div>
+                        <div class="gift-name">美味狗粮</div>
+                        <div class="gift-friendship">+30 好感度</div>
+                    </div>
+                </div>
+                <div>
+                    <span class="gift-count" id="dogfood-count">0</span>
+                    <button class="gift-btn" id="give-dogfood">喂食</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 满级礼包 -->
+        <div class="gift-box">
+            <div class="gift-box-title">🐶 小狗满级礼包</div>
+            <div class="gift-box-content">
+                <img class="gift-box-img" src="./img/tools/随机种子.png" alt="种子礼包">
+                <div>
+                    <div class="gift-box-desc">每天可领取5袋种子</div>
+                    <div class="gift-box-requirement">需要小狗好感度达到200</div>
+                </div>
+                <button class="gift-box-btn" id="claim-dog-gift">领取礼包</button>
+            </div>
+            <div class="gift-box-cooldown" id="gift-cooldown"></div>
+        </div>
+        
+        <button id="nav-back">返回花园</button>
+    </div>
+    
+    <div class="toast" id="toast"></div>
+    
+    <script src="./js/core/gameData.js"></script>
+    <script>
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        function updateFriendshipDisplay() {
+            var friendship = 0;
+            var maxFriendship = 200;
+            try {
+                friendship = GameData.getDogFriendship();
+                // 确保好感度是数字且不超过最大值
+                if (typeof friendship !== 'number' || isNaN(friendship)) {
+                    friendship = 0;
+                    GameData.setDogFriendship(0);
+                } else if (friendship > maxFriendship) {
+                    friendship = maxFriendship;
+                    GameData.setDogFriendship(maxFriendship);
+                } else if (friendship < 0) {
+                    friendship = 0;
+                    GameData.setDogFriendship(0);
+                }
+            } catch (e) {
+                friendship = 0;
+                GameData.setDogFriendship(0);
+            }
+            
+            // 确保显示的是整数
+            friendship = Math.floor(friendship);
+            
+            var percentage = (friendship / maxFriendship) * 100;
+            
+            document.getElementById('dog-friendship').textContent = '好感度: ' + friendship + '/' + maxFriendship;
+            document.getElementById('friendship-bar').style.width = percentage + '%';
+        }
+        
+        function updateFlowerCounts() {
+            document.getElementById('orchid-count').textContent = GameData.getOrchidCount();
+            document.getElementById('chrysanthemum-count').textContent = GameData.getChrysanthemumCount();
+            document.getElementById('dogfood-count').textContent = GameData.getDogFoodCount();
+            
+            var flowerCollection = GameData.getFlowerCollection();
+            document.getElementById('starflower-count').textContent = flowerCollection['starflower'] ? flowerCollection['starflower'].count : 0;
+            document.getElementById('passerbyflower-count').textContent = flowerCollection['passerbyflower'] ? flowerCollection['passerbyflower'].count : 0;
+            
+            // 禁用按钮当数量为0时
+            document.getElementById('give-orchid').disabled = GameData.getOrchidCount() <= 0;
+            document.getElementById('give-chrysanthemum').disabled = GameData.getChrysanthemumCount() <= 0;
+            document.getElementById('give-starflower').disabled = !(flowerCollection['starflower'] && flowerCollection['starflower'].count > 0);
+            document.getElementById('give-passerbyflower').disabled = !(flowerCollection['passerbyflower'] && flowerCollection['passerbyflower'].count > 0);
+            document.getElementById('give-dogfood').disabled = GameData.getDogFoodCount() <= 0;
+        }
+        
+        function updateAllDisplays() {
+            updateFriendshipDisplay();
+            updateFlowerCounts();
+            updateGiftBoxDisplay();
+        }
+        
+        function updateGiftBoxDisplay() {
+            const giftBtn = document.getElementById('claim-dog-gift');
+            const giftCooldown = document.getElementById('gift-cooldown');
+            const giftRequirement = document.querySelector('.gift-box-requirement');
+            
+            const isMaxLevel = GameData.getDogFriendship() >= 200;
+            const canClaim = GameData.canClaimDogGift();
+            
+            if (!isMaxLevel) {
+                // 未满级
+                giftBtn.disabled = true;
+                giftRequirement.textContent = '需要小狗好感度达到200（当前: ' + GameData.getDogFriendship() + '/200）';
+                giftCooldown.textContent = '';
+            } else {
+                giftRequirement.textContent = '小狗已满级，每天可领取一次';
+                if (canClaim) {
+                    giftBtn.disabled = false;
+                    giftCooldown.textContent = '礼包已准备好，点击领取！';
+                } else {
+                    giftBtn.disabled = true;
+                    const remaining = GameData.getDogGiftRemainingTime();
+                    giftCooldown.textContent = formatRemainingTime(remaining);
+                }
+            }
+        }
+        
+        function formatRemainingTime(ms) {
+            if (ms <= 0) {
+                return '礼包已准备好！';
+            }
+            const hours = Math.floor(ms / (1000 * 60 * 60));
+            const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+            return `下次领取: ${hours}小时${minutes}分钟${seconds}秒`;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保GameData已初始化
+            if (typeof GameData === 'undefined') {
+                setTimeout(function() {
+                    location.reload();
+                }, 100);
+                return;
+            }
+            
+            // 初始化显示
+            updateAllDisplays();
+            
+            // 返回按钮
+            document.getElementById('nav-back').addEventListener('click', function() {
+                window.location.href = './garden.html';
+            });
+            
+            // 赠送蝴蝶兰
+            document.getElementById('give-orchid').addEventListener('click', function() {
+                if (GameData.getOrchidCount() <= 0) {
+                    showToast('蝴蝶兰数量不足');
+                    return;
+                }
+                
+                GameData.addOrchidCount(-1);
+                GameData.addDogFriendship(1);
+                updateAllDisplays();
+                showToast('赠送了蝴蝶兰，好感度+1！');
+            });
+            
+            // 赠送菊花
+            document.getElementById('give-chrysanthemum').addEventListener('click', function() {
+                if (GameData.getChrysanthemumCount() <= 0) {
+                    showToast('菊花数量不足');
+                    return;
+                }
+                
+                GameData.addChrysanthemumCount(-1);
+                GameData.addDogFriendship(2);
+                updateAllDisplays();
+                showToast('赠送了菊花，好感度+2！');
+            });
+            
+            // 赠送星月相随
+            document.getElementById('give-starflower').addEventListener('click', function() {
+                var flowerCollection = GameData.getFlowerCollection();
+                if (!flowerCollection['starflower'] || flowerCollection['starflower'].count <= 0) {
+                    showToast('星月相随数量不足');
+                    return;
+                }
+                
+                flowerCollection['starflower'].count--;
+                GameData.saveObject('flowerCollection', flowerCollection);
+                GameData.addDogFriendship(5);
+                updateAllDisplays();
+                showToast('赠送了星月相随，好感度+5！');
+            });
+            
+            // 赠送过路黄
+            document.getElementById('give-passerbyflower').addEventListener('click', function() {
+                var flowerCollection = GameData.getFlowerCollection();
+                if (!flowerCollection['passerbyflower'] || flowerCollection['passerbyflower'].count <= 0) {
+                    showToast('过路黄数量不足');
+                    return;
+                }
+                flowerCollection['passerbyflower'].count--;
+                GameData.saveObject('flowerCollection', flowerCollection);
+                GameData.addDogFriendship(5);
+                updateAllDisplays();
+                showToast('赠送了过路黄，好感度+5！');
+            });
+            
+            // 喂食狗粮
+            document.getElementById('give-dogfood').addEventListener('click', function() {
+                if (GameData.getDogFoodCount() <= 0) {
+                    showToast('狗粮数量不足');
+                    return;
+                }
+                
+                GameData.addDogFoodCount(-1);
+                GameData.addDogFriendship(30);
+                updateAllDisplays();
+                showToast('喂食了美味狗粮，好感度+30！');
+            });
+            
+            // 点击小狗图片
+            document.getElementById('dog-image').addEventListener('click', function() {
+                showToast('旺财摇了摇尾巴，看起来很开心！');
+            });
+            
+            // 领取满级礼包
+            document.getElementById('claim-dog-gift').addEventListener('click', function() {
+                if (GameData.canClaimDogGift()) {
+                    const success = GameData.claimDogGift();
+                    if (success) {
+                        updateAllDisplays();
+                        showToast('领取成功！获得5袋种子');
+                    } else {
+                        showToast('无法领取礼包，请稍后再试');
+                    }
+                } else {
+                    if (GameData.getDogFriendship() < 200) {
+                        showToast('小狗未满级，无法领取礼包');
+                    } else {
+                        showToast('礼包已领取，请明天再来');
+                    }
+                }
+            });
+            
+            // 页面可见性变化时更新数据
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    updateAllDisplays();
+                }
+            });
+            
+            // 监听浏览器返回
+            window.addEventListener('popstate', function() {
+                updateAllDisplays();
+            });
+        });
+    </script>
+</body>
+</html>

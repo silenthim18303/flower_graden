@@ -374,6 +374,16 @@
             </div>
             <button class="shop-item-btn" id="mower-buy">购买</button>
         </div>
+        <div class="shop-item">
+            <div class="shop-item-info">
+                <img class="shop-item-img" src="./img/tools/狗粮.png" alt="狗粮">
+                <div>
+                    <div class="shop-item-name">狗粮</div>
+                    <div class="shop-item-price">兑换: 1个肥料</div>
+                </div>
+            </div>
+            <button class="shop-item-btn" id="dogfood-exchange">兑换</button>
+        </div>
     </div>
     
     <div class="shop-container" id="furniture-tab">
@@ -408,6 +418,17 @@
             </div>
             <button class="shop-item-btn" id="pool-buy">购买</button>
         </div>
+        <div class="shop-item">
+            <div class="shop-item-info">
+                <img class="shop-item-img" src="./img/furniture/秋千.png" alt="秋千">
+                <div>
+                    <div class="shop-item-name">休闲秋千</div>
+                    <div class="shop-item-price">价格: 30金币</div>
+                </div>
+            </div>
+            <button class="shop-item-btn" id="swing-buy">购买</button>
+        </div>
+
     </div>
     <div class="shop-container" id="sell-tab">
         <div class="shop-title">出售商店</div>
@@ -421,6 +442,7 @@
             </div>
             <button class="shop-item-btn" id="fertilizer-sell">出售</button>
         </div>
+
         <div class="shop-item">
             <div class="shop-item-info">
                 <img class="shop-item-img" src="./img/plants/蝴蝶兰.png" alt="蝴蝶兰">
@@ -516,6 +538,12 @@
             updateSeedDisplay();
             updateMoneyDisplay();
             updateFlowerCounts();
+            
+            // 更新狗粮兑换按钮状态
+            var dogFoodExchangeBtn = document.getElementById('dogfood-exchange');
+            if (dogFoodExchangeBtn) {
+                dogFoodExchangeBtn.disabled = GameData.getFertilizerCount() <= 0;
+            }
         }
 
         function updateGrassDisplay() {
@@ -612,6 +640,8 @@
                 });
             }
 
+
+
             var tableBuyBtn = document.getElementById('table-buy');
             if (tableBuyBtn) {
                 if (GameData.isTableUnlocked()) {
@@ -686,6 +716,33 @@
                     showToast('购买成功！水池已放置到花园');
                 });
             }
+
+            var swingBuyBtn = document.getElementById('swing-buy');
+            if (swingBuyBtn) {
+                if (GameData.isSwingUnlocked()) {
+                    swingBuyBtn.disabled = true;
+                    swingBuyBtn.textContent = '已拥有';
+                }
+                swingBuyBtn.addEventListener('click', function() {
+                    if (GameData.isSwingUnlocked()) {
+                        showToast('你已经拥有秋千了');
+                        return;
+                    }
+                    var money = GameData.getMoneyCount();
+                    if (money < 30) {
+                        showToast('金币不足');
+                        return;
+                    }
+                    GameData.addMoneyCount(-30);
+                    GameData.unlockSwing();
+                    swingBuyBtn.disabled = true;
+                    swingBuyBtn.textContent = '已拥有';
+                    updateAllDisplays();
+                    showToast('购买成功！秋千已放置到花园');
+                });
+            }
+
+
             
             // 镰刀购买逻辑
             var sickleBuyBtn = document.getElementById('sickle-buy');
@@ -742,6 +799,23 @@
                     mowerBuyBtn.textContent = '已拥有';
                     updateAllDisplays();
                     showToast('购买成功！割草机已放置到花园');
+                });
+            }
+            
+            // 狗粮兑换逻辑
+            var dogFoodExchangeBtn = document.getElementById('dogfood-exchange');
+            if (dogFoodExchangeBtn) {
+                dogFoodExchangeBtn.disabled = GameData.getFertilizerCount() <= 0;
+                dogFoodExchangeBtn.addEventListener('click', function() {
+                    var fertilizer = GameData.getFertilizerCount();
+                    if (fertilizer < 1) {
+                        showToast('肥料不足，无法兑换狗粮');
+                        return;
+                    }
+                    GameData.addFertilizerCount(-1);
+                    GameData.addDogFoodCount(1);
+                    updateAllDisplays();
+                    showToast('兑换成功！获得1份狗粮');
                 });
             }
         }
