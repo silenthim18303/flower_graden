@@ -15,7 +15,7 @@ var markBillAnimDuration = 100;
 // ==================================
 
 function createMarkBill(scene) {
-    var markBill = scene.add.image(markBillX, markBillY, 'mark_bill');
+    var markBill = scene.add.image(markBillX, markBillY, 'game'); // 纹理名称改为game
     markBill.setScale(markBillScale);
     markBill.setInteractive();
 
@@ -32,7 +32,7 @@ function createMarkBill(scene) {
             ease: 'Quad.easeInOut',
             onComplete: function() {
                 isAnimating = false;
-                window.location.href = 'shop.html';
+                window.location.href = 'game.html';
             }
         });
     });

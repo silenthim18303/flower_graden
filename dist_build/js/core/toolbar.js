@@ -125,31 +125,37 @@ function initToolbar() {
         GameData.addSeedCount(-1);
         updateSeedDisplay();
 
-        var result = plantStarFlower();
-
-        if (result === 'success') {
-            showToolbarToast('种子发芽了，长出了一朵星月相随！');
-        } else if (result === 'max_count') {
-            var result2 = plantPasserbyFlower();
-            if (result2 === 'success') {
-                showToolbarToast('种子发芽了，长出了一朵过路黄！');
-            } else if (result2 === 'max_count') {
-                showToolbarToast('花园已经满了');
-                GameData.addSeedCount(1);
-                updateSeedDisplay();
-            } else {
-                showToolbarToast('种子没有发芽，再试试吧');
+        // 先检查两种花是否都已满
+        var starflowerFull = plantStarFlower() === 'max_count';
+        var passerbyFull = plantPasserbyFlower() === 'max_count';
+        
+        if (starflowerFull && passerbyFull) {
+            showToolbarToast('花园已经满了');
+            GameData.addSeedCount(1);
+            updateSeedDisplay();
+            return;
+        }
+        
+        // 显示统一提示语
+        showToolbarToast('种子已撒下，看看会长出什么花吧');
+        
+        // 随机决定尝试种植哪种花
+        var random = Math.random();
+        
+        // 50%概率先尝试星星花，50%概率先尝试路人花
+        if (random < 0.5) {
+            // 先尝试星星花
+            var result = plantStarFlower();
+            if (result !== 'success' && result !== 'max_count') {
+                // 星星花没种活且不是因为数量满了，再尝试路人花
+                plantPasserbyFlower();
             }
         } else {
+            // 先尝试路人花
             var result3 = plantPasserbyFlower();
-            if (result3 === 'success') {
-                showToolbarToast('种子发芽了，长出了一朵过路黄！');
-            } else if (result3 === 'max_count') {
-                showToolbarToast('过路黄已经满了');
-                GameData.addSeedCount(1);
-                updateSeedDisplay();
-            } else {
-                showToolbarToast('种子没有发芽，再试试吧');
+            if (result3 !== 'success' && result3 !== 'max_count') {
+                // 路人花没种活且不是因为数量满了，再尝试星星花
+                plantStarFlower();
             }
         }
     });

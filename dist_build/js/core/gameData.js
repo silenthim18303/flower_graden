@@ -17,7 +17,8 @@ var GameData = {
         MONEY_COUNT: 'moneyCount',
         TABLE_UNLOCKED: 'tableUnlocked',
         BIRD_CAGE_UNLOCKED: 'birdCageUnlocked',
-        POOL_UNLOCKED: 'poolUnlocked'
+        POOL_UNLOCKED: 'poolUnlocked',
+        DOG_UNLOCKED: 'dogUnlocked'
     },
 
     // ========== 默认值 ==========
@@ -34,7 +35,8 @@ var GameData = {
         moneyCount: 0,
         tableUnlocked: false,
         birdCageUnlocked: false,
-        poolUnlocked: false
+        poolUnlocked: false,
+        dogUnlocked: true
     },
 
     // ========== 内存缓存 ==========
@@ -74,6 +76,7 @@ var GameData = {
         this._cache.tableUnlocked = this.load(this.KEYS.TABLE_UNLOCKED, this.DEFAULTS.tableUnlocked);
         this._cache.birdCageUnlocked = this.load(this.KEYS.BIRD_CAGE_UNLOCKED, this.DEFAULTS.birdCageUnlocked);
         this._cache.poolUnlocked = this.load(this.KEYS.POOL_UNLOCKED, this.DEFAULTS.poolUnlocked);
+        this._cache.dogUnlocked = this.load(this.KEYS.DOG_UNLOCKED, this.DEFAULTS.dogUnlocked);
     },
 
     // ========== 通用加载方法 ==========
@@ -288,6 +291,16 @@ var GameData = {
     unlockPool: function() {
         this._cache.poolUnlocked = true;
         this.save(this.KEYS.POOL_UNLOCKED, true);
+    },
+
+    // ========== 小狗解锁状态 ==========
+    isDogUnlocked: function() {
+        return this._cache.dogUnlocked;
+    },
+
+    unlockDog: function() {
+        this._cache.dogUnlocked = true;
+        this.save(this.KEYS.DOG_UNLOCKED, true);
     },
 
     // ========== 重置所有数据（调试用） ==========

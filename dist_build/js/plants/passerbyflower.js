@@ -1,8 +1,8 @@
 // ========== 过路黄配置区域 ==========
 // 最大数量上限：场景中同时存在的最大过路黄数量
 var passerbyFlowerMaxCount = 5;
-// 种子发芽概率 (0.15 = 15%)
-var passerbyFlowerSpawnRate = 1;
+// 种子发芽概率 (0.5 = 50%)
+var passerbyFlowerSpawnRate = 0.5;
 // 最小缩放比例
 var passerbyFlowerMinScale = 0.06;
 // 最大缩放比例

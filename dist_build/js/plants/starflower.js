@@ -1,8 +1,8 @@
 // ========== 星月相随配置区域 ==========
 // 最大数量上限：场景中同时存在的最大星月相随数量
 var starFlowerMaxCount = 5;
-// 种子发芽概率 (0.2 = 20%)
-var starFlowerSpawnRate = 1;
+// 种子发芽概率 (0.5 = 50%)
+var starFlowerSpawnRate = 0.5;
 // 最小缩放比例
 var starFlowerMinScale = 0.06;
 // 最大缩放比例

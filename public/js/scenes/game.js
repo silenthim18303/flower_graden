@@ -19,7 +19,7 @@ var game = new Phaser.Game(config);
 function preload() {
     this.load.image('background', 'img/background/back1.png');
     this.load.image('work', 'img/tools/work.png');
-    this.load.image('mark_bill', 'img/tools/mark_bill.png');
+    this.load.image('game', 'img/tools/game.png'); // 加载新的game.png图片
     this.load.image('garden_bill', 'img/tools/garden_bill.png');
     this.load.image('tree', 'img/plants/tree.png');
     this.load.image('grass', 'img/plants/glass.png');

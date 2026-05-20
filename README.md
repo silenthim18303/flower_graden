@@ -8,7 +8,7 @@
 - 💰 **经济系统** - 买卖种子、道具和装饰
 - 🏠 **多场景** - 花园、商店、工作室等多个场景
 - 🛠️ **丰富道具** - 肥料、镰刀、割草机等工具
-- 📦 **家具装饰** - 桌椅、鸟笼、水池等装饰物品
+- 📦 **家具装饰** - 桌椅、鸟笼、水池、小狗等装饰物品
 - ⚡ **智能加载** - 首次完整加载，后续快速启动
 - 🎨 **美观界面** - 包含启动加载动画和进度条
 
@@ -34,7 +34,7 @@ garden_vite/
 │   │   ├── background/     # 背景图
 │   │   ├── tools/          # 道具图
 │   │   ├── plants/         # 植物图
-│   │   └── furniture/      # 家具图
+│   │   └── furniture/      # 家具图（包含dog.webm视频）
 │   └── phaserjs/           # Phaser 游戏引擎
 ├── public/                 # 开发用公共资源
 │   ├── img/
@@ -98,6 +98,7 @@ http-server dist_build -p 8080
 | 堆肥 | compost.html | 堆肥功能 |
 | 电商 | ecommerce.html | 电商功能 |
 | 花箱 | flowerbox.html | 花箱场景 |
+| 小狗视频 | dog.webm | 花园中的动态小狗视频装饰 |
 | 割草机 | mower.html | 割草机工具 |
 | 种子 | seed.html | 种子相关 |
 | 镰刀 | sickle.html | 镰刀工具 |
@@ -138,6 +139,27 @@ http-server dist_build -p 8080
 - 清除浏览器缓存
 - 或使用无痕模式
 - 或在浏览器控制台执行：`localStorage.removeItem('garden_game_loaded')`
+
+## 小狗解锁功能
+
+花园中的小狗视频装饰默认是解锁状态，如果需要修改：
+
+### 解锁小狗
+在浏览器控制台执行：
+```javascript
+GameData.unlockDog();
+```
+
+### 检查解锁状态
+```javascript
+GameData.isDogUnlocked();
+```
+
+### 修改默认解锁状态
+编辑 `public/js/core/gameData.js` 文件：
+```javascript
+dogUnlocked: true  // true 为解锁，false 为未解锁
+```
 
 ## 迁移说明
 

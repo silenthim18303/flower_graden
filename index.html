@@ -235,6 +235,13 @@
     <div id="toolbar"></div>
     <div id="game-container"></div>
     <script src="./phaserjs/phaser.js"></script>
-    <script type="module" src="./main.js"></script>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/utils/transition.js"></script>
+    <script>
+        // 初始化页面过渡效果
+        window.addEventListener('DOMContentLoaded', () => {
+            PageTransition.init();
+        });
+    </script>
 </body>
 </html>

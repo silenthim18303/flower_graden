@@ -11,7 +11,7 @@ const resources = [
   './img/tools/随机种子.png',
   './img/tools/garden_bill.png',
   './img/tools/grass_bill.png',
-  './img/tools/mark_bill.png',
+  './img/tools/game.png',
   './img/tools/work.png',
   './img/tools/compostbin.png',
   './img/tools/PC.png',
