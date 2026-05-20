@@ -26,7 +26,8 @@ html_files = [
     'mower.html',
     'seed.html',
     'sickle.html',
-    'tree.html'
+    'tree.html',
+    'game.html'
 ]
 
 for html_file in html_files:

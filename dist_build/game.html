@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>花园游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            background: url('img/background/garden_game.png') no-repeat center center;
+            background-size: cover;
+        }
+        #counter-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #counter-btn .icon {
+            font-size: 10px;
+        }
+        #fertilizer-btn {
+            position: fixed;
+            top: 50px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #fertilizer-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #seed-btn {
+            position: fixed;
+            top: 85px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #seed-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+        #money-btn {
+            position: fixed;
+            top: 120px;
+            left: 15px;
+            z-index: 1000;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 14px;
+        }
+        
+        /* 开发中提示框 */
+        .dev-notice {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            font-family: 'Microsoft YaHei', sans-serif;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .dev-notice::before {
+            content: '🚧';
+            display: block;
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: spin 2s linear infinite;
+        }
+        
+        .dev-notice-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .dev-notice-text {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #money-btn {
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #money-btn .icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        #toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #toast.show {
+            opacity: 1;
+        }
+        #back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        #back-btn:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 开发中提示框 -->
+    <div class="dev-notice">
+        <div class="dev-notice-title">功能开发中</div>
+        <div class="dev-notice-text">正在开发小游戏界面中</div>
+    </div>
+    
+    <div id="game-container">
+        <div id="counter-btn">
+            <span class="icon">🌿</span>
+            <span id="counter-text">杂草: 0</span>
+        </div>
+        <div id="fertilizer-btn">
+            <img src="img/tools/fertilizer.png" alt="肥料" class="icon">
+            <span id="fertilizer-text">肥料: 0</span>
+        </div>
+        <div id="seed-btn">
+            <img src="img/tools/随机种子.png" alt="种子" class="icon">
+            <span id="seed-text">种子: 0</span>
+        </div>
+        <div id="money-btn">
+            <span class="icon">💰</span>
+            <span id="money-text">货币: 0</span>
+        </div>
+        
+
+        
+        <div id="toast"></div>
+        
+        <button id="back-btn">←</button>
+    </div>
+
+    <script src="phaserjs/phaser.min.js"></script>
+    <script src="js/core/gameData.js"></script>
+    <script src="js/tools/fertilizer.js"></script>
+    <script src="js/plants/starflower.js"></script>
+    <script src="js/plants/passerbyflower.js"></script>
+    <script src="js/plants/chrysanthemum.js"></script>
+    <script src="js/plants/orchid.js"></script>
+    <script src="js/scenes/game.js"></script>
+    <script>
+        // 返回按钮逻辑
+        window.addEventListener('load', function() {
+            var backBtn = document.getElementById('back-btn');
+            if (backBtn) {
+                backBtn.addEventListener('click', function() {
+                    // 使用页面过渡效果返回主页
+                    if (typeof PageTransition !== 'undefined') {
+                        PageTransition.fadeOut(function() {
+                            window.location.href = 'index.html';
+                        });
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
