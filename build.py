@@ -30,7 +30,8 @@ html_files = [
     'tree.html',
     'game.html',
     'dog.html',
-    'tutorial.html'
+    'tutorial.html',
+    'minesweeper.html'
 ]
 
 for html_file in html_files:

@@ -97,55 +97,6 @@
             border-radius: 50px;
             padding: 6px 14px;
             font-size: 14px;
-        }
-        
-        /* 开发中提示框 */
-        .dev-notice {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2000;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            font-family: 'Microsoft YaHei', sans-serif;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .dev-notice::before {
-            content: '🚧';
-            display: block;
-            font-size: 48px;
-            margin-bottom: 15px;
-            animation: spin 2s linear infinite;
-        }
-        
-        .dev-notice-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .dev-notice-text {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-            50% { transform: translate(-50%, -50%) translateY(-10px); }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        #money-btn {
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
@@ -201,15 +152,30 @@
             transform: scale(1.1);
             box-shadow: 0 6px 16px rgba(0,0,0,0.4);
         }
+        #bush-btn {
+            position: fixed;
+            bottom: 200px;
+            left: 30%;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.15s ease;
+        }
+        #bush-btn img {
+            width: 150px;
+            height: auto;
+        }
+        #bush-btn:hover {
+            transform: scale(1.05);
+        }
+        #bush-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
-    <!-- 开发中提示框 -->
-    <div class="dev-notice">
-        <div class="dev-notice-title">功能开发中</div>
-        <div class="dev-notice-text">正在开发小游戏界面中</div>
-    </div>
-    
     <div id="game-container">
         <div id="counter-btn">
             <span class="icon">🌿</span>
@@ -231,6 +197,10 @@
 
         
         <div id="toast"></div>
+        
+        <button id="bush-btn">
+            <img src="img/plants/灌木丛.png" alt="灌木丛">
+        </button>
         
         <button id="back-btn">←</button>
     </div>
@@ -258,6 +228,26 @@
                         window.location.href = 'index.html';
                     }
                 });
+            }
+            
+            // 灌木丛按钮逻辑
+            var bushBtn = document.getElementById('bush-btn');
+            if (bushBtn) {
+                bushBtn.addEventListener('click', function() {
+                    window.location.href = 'minesweeper.html';
+                });
+            }
+            
+            // Toast提示函数
+            function showToast(message) {
+                var toast = document.getElementById('toast');
+                if (toast) {
+                    toast.textContent = message;
+                    toast.classList.add('show');
+                    setTimeout(function() {
+                        toast.classList.remove('show');
+                    }, 2000);
+                }
             }
         });
     </script>

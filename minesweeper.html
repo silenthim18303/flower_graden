@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>不踩花大作战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: white;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #game-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        #game-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        #game-info {
+            display: flex;
+            gap: 30px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .info-icon {
+            font-size: 24px;
+        }
+        #reset-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        #reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+        }
+        #game-board {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .row {
+            display: flex;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            background: linear-gradient(145deg, #e0e0e0, #f5f5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('img/plants/glass.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .cell:hover:not(.revealed) {
+            background: linear-gradient(145deg, #d0d0d0, #e5e5e5);
+        }
+        .cell:active:not(.revealed) {
+            transform: scale(0.95);
+        }
+        .cell.revealed::before {
+            display: none;
+        }
+        .cell.revealed {
+            background: white;
+            cursor: default;
+        }
+        .cell.mine {
+            background: white;
+        }
+        .cell.mine img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .cell.flagged {
+            background: linear-gradient(145deg, #ffd93d, #ffed4e);
+        }
+        .cell[data-count="1"] { color: #0066ff; }
+        .cell[data-count="2"] { color: #00cc66; }
+        .cell[data-count="3"] { color: #ff3333; }
+        .cell[data-count="4"] { color: #9933ff; }
+        .cell[data-count="5"] { color: #800000; }
+        .cell[data-count="6"] { color: #00cccc; }
+        .cell[data-count="7"] { color: #000000; }
+        .cell[data-count="8"] { color: #808080; }
+        #game-status {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        #back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        #back-btn:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+        #rules-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+        #rules-modal {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: popIn 0.4s ease;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        #rules-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        #rules-content {
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+            line-height: 2;
+            margin-bottom: 30px;
+        }
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .rule-icon {
+            font-size: 24px;
+        }
+        #start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        #start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="rules-overlay">
+        <div id="rules-modal">
+            <div id="rules-title">🌸 不踩花大作战</div>
+            <div id="rules-content">
+                <div class="rule-item">
+                    <span class="rule-icon">🖱️</span>
+                    <span>左键点击：翻开格子</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">🚩</span>
+                    <span>右键点击：标记/取消标记花朵位置</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">🔢</span>
+                    <span>数字表示周围8格内的花朵数量</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">🌼</span>
+                    <span>目标：避开所有花朵，翻开所有安全格子</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">🎁</span>
+                    <span>胜利奖励：1包种子</span>
+                </div>
+            </div>
+            <button id="start-btn">开始游戏</button>
+        </div>
+    </div>
+    
+    <div id="game-container">
+        <div id="game-header">
+            <div id="game-title">🌸 不踩花大作战</div>
+            <div id="game-info">
+                <div class="info-item">
+                    <span class="info-icon">🚩</span>
+                    <span id="flag-count">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🌼</span>
+                    <span id="mine-count">10</span>
+                </div>
+            </div>
+            <button id="reset-btn">重新开始</button>
+        </div>
+        
+        <div id="game-board"></div>
+        
+        <div id="game-status"></div>
+        
+        <button id="back-btn">←</button>
+    </div>
+
+    <script src="js/core/gameData.js"></script>
+    <script>
+        const BOARD_SIZE = 9;
+        const MINE_COUNT = 10;
+        
+        let board = [];
+        let revealed = [];
+        let flagged = [];
+        let gameOver = false;
+        let gameWon = false;
+        let firstClick = true;
+        let flagCount = 0;
+        let gameStarted = false;
+        let rewardGiven = false;
+        
+        function initGame() {
+            board = [];
+            revealed = [];
+            flagged = [];
+            gameOver = false;
+            gameWon = false;
+            firstClick = true;
+            flagCount = 0;
+            rewardGiven = false;
+            
+            document.getElementById('flag-count').textContent = '0';
+            document.getElementById('game-status').textContent = '';
+            
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                board[i] = [];
+                revealed[i] = [];
+                flagged[i] = [];
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    board[i][j] = 0;
+                    revealed[i][j] = false;
+                    flagged[i][j] = false;
+                }
+            }
+            
+            renderBoard();
+        }
+        
+        function placeMines(excludeRow, excludeCol) {
+            let minesPlaced = 0;
+            while (minesPlaced < MINE_COUNT) {
+                const row = Math.floor(Math.random() * BOARD_SIZE);
+                const col = Math.floor(Math.random() * BOARD_SIZE);
+                
+                const isExcluded = Math.abs(row - excludeRow) <= 1 && Math.abs(col - excludeCol) <= 1;
+                
+                if (board[row][col] !== -1 && !isExcluded) {
+                    board[row][col] = -1;
+                    minesPlaced++;
+                }
+            }
+            
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (board[i][j] !== -1) {
+                        board[i][j] = countAdjacentMines(i, j);
+                    }
+                }
+            }
+        }
+        
+        function countAdjacentMines(row, col) {
+            let count = 0;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    const newRow = row + i;
+                    const newCol = col + j;
+                    if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE) {
+                        if (board[newRow][newCol] === -1) {
+                            count++;
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+        
+        function renderBoard() {
+            const gameBoard = document.getElementById('game-board');
+            gameBoard.innerHTML = '';
+            
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+                
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    if (revealed[i][j]) {
+                        cell.classList.add('revealed');
+                        if (board[i][j] === -1) {
+                            cell.innerHTML = '<img src="img/plants/菊花.png" alt="菊花">';
+                            cell.classList.add('mine');
+                        } else if (board[i][j] > 0) {
+                            cell.textContent = board[i][j];
+                            cell.dataset.count = board[i][j];
+                        }
+                    } else if (flagged[i][j]) {
+                        cell.classList.add('flagged');
+                        cell.textContent = '🚩';
+                    }
+                    
+                    cell.addEventListener('click', function() { handleClick(i, j); });
+                    cell.addEventListener('contextmenu', function(e) {
+                        e.preventDefault();
+                        handleRightClick(i, j);
+                    });
+                    
+                    rowDiv.appendChild(cell);
+                }
+                
+                gameBoard.appendChild(rowDiv);
+            }
+        }
+        
+        function handleClick(row, col) {
+            if (!gameStarted || gameOver || gameWon || flagged[row][col] || revealed[row][col]) {
+                return;
+            }
+            
+            if (firstClick) {
+                firstClick = false;
+                placeMines(row, col);
+            }
+            
+            revealCell(row, col);
+            renderBoard();
+            checkWin();
+        }
+        
+        function handleRightClick(row, col) {
+            if (!gameStarted || gameOver || gameWon || revealed[row][col]) {
+                return;
+            }
+            
+            flagged[row][col] = !flagged[row][col];
+            if (flagged[row][col]) {
+                flagCount++;
+            } else {
+                flagCount--;
+            }
+            
+            document.getElementById('flag-count').textContent = flagCount;
+            renderBoard();
+        }
+        
+        function revealCell(row, col) {
+            if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+                return;
+            }
+            
+            if (revealed[row][col] || flagged[row][col]) {
+                return;
+            }
+            
+            revealed[row][col] = true;
+            
+            if (board[row][col] === -1) {
+                revealAllMines();
+                gameOver = true;
+                document.getElementById('game-status').textContent = '🌺 踩到花朵了！';
+                return;
+            }
+            
+            if (board[row][col] === 0) {
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        revealCell(row + i, col + j);
+                    }
+                }
+            }
+        }
+        
+        function revealAllMines() {
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (board[i][j] === -1) {
+                        revealed[i][j] = true;
+                    }
+                }
+            }
+        }
+        
+        function checkWin() {
+            if (gameOver) return;
+            
+            let unrevealedSafe = 0;
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                for (let j = 0; j < BOARD_SIZE; j++) {
+                    if (!revealed[i][j] && board[i][j] !== -1) {
+                        unrevealedSafe++;
+                    }
+                }
+            }
+            
+            if (unrevealedSafe === 0) {
+                gameWon = true;
+                
+                if (!rewardGiven) {
+                    rewardGiven = true;
+                    if (typeof GameData !== 'undefined' && typeof GameData.addSeedCount === 'function') {
+                        GameData.addSeedCount(1);
+                    }
+                    document.getElementById('game-status').textContent = '🎊 恭喜！获得1包种子！';
+                } else {
+                    document.getElementById('game-status').textContent = '🎊 成功避开所有花朵！';
+                }
+            }
+        }
+        
+        window.addEventListener('load', function() {
+            initGame();
+            
+            document.getElementById('reset-btn').addEventListener('click', initGame);
+            
+            document.getElementById('back-btn').addEventListener('click', function() {
+                window.location.href = 'game.html';
+            });
+            
+            document.getElementById('start-btn').addEventListener('click', function() {
+                document.getElementById('rules-overlay').style.display = 'none';
+                gameStarted = true;
+            });
+        });
+    </script>
+</body>
+</html>

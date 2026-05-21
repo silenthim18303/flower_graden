@@ -27,6 +27,7 @@ const resources = [
   './img/plants/过路黄.png',
   './img/plants/花箱.png',
   './img/plants/glass.png',
+  './img/plants/灌木丛.png',
   './img/furniture/桌椅.png',
   './img/furniture/鸟笼.png',
   './img/furniture/水池.png',
