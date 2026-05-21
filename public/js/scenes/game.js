@@ -7,6 +7,9 @@ var config = {
         mode: Phaser.Scale.ENVELOPE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
+    audio: {
+        disableWebAudio: false
+    },
     scene: {
         preload: preload,
         create: create,
@@ -27,6 +30,8 @@ function preload() {
     this.load.image('chrysanthemum', 'img/plants/菊花.png');
     this.load.image('starflower', 'img/plants/星月相随.png');
     this.load.image('passerbyflower', 'img/plants/过路黄.png');
+    this.load.audio('growup', 'sound/growup.wav');
+    this.load.audio('planting', 'sound/planting.wav');
 }
 
 function create() {
@@ -42,6 +47,18 @@ function create() {
         (this.scale.width - bg.displayWidth) / 2,
         (this.scale.height - bg.displayHeight) / 2
     );
+
+    // 尝试恢复音频上下文
+    if (this.sound && this.sound.context && this.sound.context.state === 'suspended') {
+        this.sound.context.resume();
+    }
+
+    // 添加点击事件来确保音频上下文启动
+    this.input.on('pointerdown', function() {
+        if (this.sound && this.sound.context && this.sound.context.state === 'suspended') {
+            this.sound.context.resume();
+        }
+    }, this);
 
     createTree(this);
     createWork(this);

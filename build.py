@@ -21,13 +21,16 @@ html_files = [
     'garden.html',
     'work.html',
     'compost.html',
+    'compost_ola.html',
     'ecommerce.html',
     'flowerbox.html',
     'mower.html',
     'seed.html',
     'sickle.html',
     'tree.html',
-    'game.html'
+    'game.html',
+    'dog.html',
+    'tutorial.html'
 ]
 
 for html_file in html_files:

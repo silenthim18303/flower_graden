@@ -205,9 +205,40 @@
         .toolbar-item.locked img {
             filter: grayscale(100%);
         }
+
+        /* 重玩教程按钮 */
+        #replay-tutorial-btn {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        #replay-tutorial-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        #replay-tutorial-btn:active {
+            transform: translateX(-50%) scale(0.98);
+        }
     </style>
 </head>
 <body>
+    <a href="tutorial.html" id="replay-tutorial-btn">📖 新手教程</a>
     <div id="loading-screen">
         <div id="progress-container">
             <div id="progress-bar">
@@ -235,8 +266,8 @@
     <div id="toolbar"></div>
     <div id="game-container"></div>
     <script src="./phaserjs/phaser.js"></script>
-    <script src="./main.js"></script>
     <script src="./js/utils/transition.js"></script>
+    <script src="./main.js"></script>
     <script>
         // 初始化页面过渡效果
         window.addEventListener('DOMContentLoaded', () => {

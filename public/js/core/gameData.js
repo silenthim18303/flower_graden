@@ -27,16 +27,16 @@ var GameData = {
 
     // ========== 默认值 ==========
     DEFAULTS: {
-        grassCounter: 999,
-        fertilizerCounter: 999,
+        grassCounter: 0,
+        fertilizerCounter: 0,
         sickleUnlocked: false,
         mowerUnlocked: false,
         lastShakeTime: 0,
         flowerCollection: {},
         orchidCount: 0,
         chrysanthemumCount: 0,
-        seedCount: 999,
-        moneyCount: 999,
+        seedCount: 0,
+        moneyCount: 0,
         tableUnlocked: false,
         birdCageUnlocked: false,
         poolUnlocked: false,

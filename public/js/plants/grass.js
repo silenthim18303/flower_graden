@@ -29,6 +29,8 @@ var counterText = null;
 var currentGrassCount = 0;
 var grassScene = null;
 var regrowTimer = null;
+var growupSound = null;
+var plantingSound = null;
 
 function getCurrentGrassCount() {
     return currentGrassCount;
@@ -73,6 +75,19 @@ function spawnSingleGrass(scene) {
     grass.setData('originalScale', randomScale);
     grass.setData('isAnimating', false);
 
+    // 播放生长音效
+    try {
+        if (growupSound) {
+            // 确保音频上下文已启动
+            if (scene.sound && scene.sound.context && scene.sound.context.state === 'suspended') {
+                scene.sound.context.resume();
+            }
+            growupSound.play({ volume: 1.3 });
+        }
+    } catch (e) {
+        console.log('音效播放失败:', e);
+    }
+
     scene.tweens.add({
         targets: grass,
         y: randomY,
@@ -104,6 +119,14 @@ function spawnSingleGrass(scene) {
                     duration: 300,
                     ease: 'Quad.easeOut',
                     onComplete: function() {
+                        // 播放种植音效
+                        try {
+                            if (plantingSound) {
+                                plantingSound.play({ volume: 0.6 });
+                            }
+                        } catch (e) {
+                            console.log('音效播放失败:', e);
+                        }
                         currentGrass.destroy();
                         currentGrassCount--;
                         grassCounter++;
@@ -191,6 +214,8 @@ function createGrass(scene) {
     }
 
     grassScene = scene;
+    growupSound = scene.sound.add('growup');
+    plantingSound = scene.sound.add('planting');
 
     spawnSingleGrass(scene);
     startGrowTimer();
@@ -238,6 +263,14 @@ function harvestAllGrass() {
                 duration: 300,
                 ease: 'Back.easeIn',
                 onComplete: function() {
+                    // 播放种植音效
+                    try {
+                        if (plantingSound) {
+                            plantingSound.play({ volume: 0.6 });
+                        }
+                    } catch (e) {
+                        console.log('音效播放失败:', e);
+                    }
                     grass.destroy();
                     currentGrassCount--;
                     harvestCount++;

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新手教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .tutorial-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .tutorial-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+            margin: 0 auto 25px;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .tutorial-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .tutorial-desc {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        .tutorial-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tutorial-btn {
+            padding: 12px 30px;
+            font-size: 15px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .tutorial-btn-prev {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .tutorial-btn-prev:hover {
+            background: #e0e0e0;
+        }
+
+        .tutorial-btn-next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tutorial-btn-next:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .tutorial-btn-back {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tutorial-btn-back:hover {
+            background: #45a049;
+        }
+
+        .page-indicator {
+            font-size: 14px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scale(1.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-container">
+        <img class="tutorial-image" src="" alt="教程图片">
+        
+        <h1 class="tutorial-title"></h1>
+        <p class="tutorial-desc"></p>
+        
+        <div class="dots-container" id="dots-container"></div>
+        
+        <div class="tutorial-buttons">
+            <button class="tutorial-btn tutorial-btn-prev" id="prev-btn" style="display: none;">上一页</button>
+            <button class="tutorial-btn tutorial-btn-next" id="next-btn">下一页</button>
+        </div>
+        
+        <div class="page-indicator" id="page-indicator"></div>
+        
+        <a href="index.html" class="back-link" id="back-link" style="display: none;">← 返回游戏</a>
+    </div>
+
+    <script>
+        // 教程内容配置
+        const tutorialPages = [
+            {
+                img: './img/guide/x1.png',
+                title: '欢迎来到花园！',
+                desc: '这是一个温馨的花园小游戏，让我们一起开始吧！'
+            },
+            {
+                img: './img/guide/x2.png',
+                title: '收集杂草',
+                desc: '点击花园中的杂草来收集它们，这是获得资源的第一步！'
+            },
+            {
+                img: './img/guide/x3.png',
+                title: '使用工具栏',
+                desc: '底部工具栏有各种工具：镰刀可以快速除草，施肥能种菊花，种子可以种更多花！'
+            },
+            {
+                img: './img/guide/x4.png',
+                title: '收集资源',
+                desc: '通过收集杂草和种植花卉，你可以获得种子、肥料和货币，解锁更多功能！'
+            },
+            {
+                img: './img/guide/x5.png',
+                title: '开始种花吧！',
+                desc: '现在你已经了解了基本操作，让我们开始打造属于自己的美丽花园吧！'
+            }
+        ];
+
+        let currentPage = 0;
+
+        // DOM 元素
+        const titleEl = document.querySelector('.tutorial-title');
+        const descEl = document.querySelector('.tutorial-desc');
+        const imgEl = document.querySelector('.tutorial-image');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageIndicator = document.getElementById('page-indicator');
+        const dotsContainer = document.getElementById('dots-container');
+        const backLink = document.getElementById('back-link');
+
+        // 创建点指示器
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < tutorialPages.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (i === 0) dot.className += ' active';
+                dot.addEventListener('click', () => goToPage(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // 更新页面内容
+        function updatePage() {
+            const page = tutorialPages[currentPage];
+            
+            titleEl.textContent = page.title;
+            descEl.textContent = page.desc;
+            imgEl.src = page.img;
+            
+            // 更新点指示器
+            const dots = dotsContainer.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                if (i === currentPage) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // 更新页码
+            pageIndicator.textContent = `${currentPage + 1} / ${tutorialPages.length}`;
+            
+            // 更新按钮
+            prevBtn.style.display = currentPage === 0 ? 'none' : 'inline-block';
+            
+            if (currentPage === tutorialPages.length - 1) {
+                nextBtn.textContent = '开始玩';
+                nextBtn.className = 'tutorial-btn tutorial-btn-back';
+                backLink.style.display = 'inline-block';
+            } else {
+                nextBtn.textContent = '下一页';
+                nextBtn.className = 'tutorial-btn tutorial-btn-next';
+                backLink.style.display = 'none';
+            }
+        }
+
+        // 下一页
+        function nextPage() {
+            if (currentPage < tutorialPages.length - 1) {
+                currentPage++;
+                updatePage();
+            } else {
+                // 标记教程已完成
+                localStorage.setItem('tutorialCompleted', 'true');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 上一页
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePage();
+            }
+        }
+
+        // 跳转到指定页
+        function goToPage(pageNum) {
+            if (pageNum >= 0 && pageNum < tutorialPages.length) {
+                currentPage = pageNum;
+                updatePage();
+            }
+        }
+
+        // 事件监听
+        prevBtn.addEventListener('click', prevPage);
+        nextBtn.addEventListener('click', nextPage);
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                prevPage();
+            } else if (e.key === 'Escape') {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // 初始化
+        createDots();
+        updatePage();
+    </script>
+</body>
+</html>
